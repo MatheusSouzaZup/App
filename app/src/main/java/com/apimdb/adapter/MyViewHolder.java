@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import matheus.com.cardviewplusrecyclear.R;
+import com.apimdb.R;
 
 /**
  * Created by ZUP on 20/03/2017.

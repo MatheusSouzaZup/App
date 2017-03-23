@@ -3,6 +3,7 @@ package com.apimdb.fragments;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class MovieFragment extends android.support.v4.app.Fragment {
         public MovieFragment(ArrayList<Filme> l)
         {
             myList = l;
+            Log.i("Lista",l.get(0).getTitle());
         }
         @Override
     public View onCreateView(LayoutInflater inflater,

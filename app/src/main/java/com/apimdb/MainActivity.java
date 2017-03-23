@@ -1,25 +1,26 @@
 package com.apimdb;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import com.apimdb.*;
-import com.apimdb.Dados.Filmes;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.ListIterator;
+import java.util.concurrent.ExecutionException;
+import com.apimdb.connection.Utils;
+import com.apimdb.domain.Filme;
+import com.apimdb.fragments.MovieFragment;
 
 public class MainActivity extends AppCompatActivity {
-
     private Toolbar myToolbar;
 
     @Override
@@ -27,25 +28,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle("Lista");
         setSupportActionBar(myToolbar);
 
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        SearchView sv = new SearchView(this);
-        sv.setOnQueryTextListener(new SearchFiltro());
-        MenuItem m1 = menu.add(0, 0, 0, "Item 1");
-        m1.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        m1.setActionView(sv);
+        MenuItem item = menu.findItem(R.id.menuSearch);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_principal, menu);
+        Log.i("Mensagem", "Aqui");
 
 
-        return true;
+
+        return super.onCreateOptionsMenu(menu);
     }
-
     private class SearchFiltro implements SearchView.OnQueryTextListener {
 
         @Override
@@ -59,147 +59,116 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onQueryTextSubmit(String query) {
             Log.i("Script", "onQueryTextSubmit->" + query);
+                String x = query.toString().replace(' ', '+');
+                GetJson download = new GetJson(MainActivity.this);
+                GetJson2 download2 = new GetJson2(MainActivity.this);
+                download.execute("http://www.omdbapi.com/?s=" + x);
+
+                try {
+                    ArrayList<Filme> list;
+                    list = download.get();
+                    download2.execute(list);
+                    list = download2.getLista();
+                    ///Here
+                    MovieFragment fra = (MovieFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
+
+                    if (fra == null) {
+                        fra = new MovieFragment(list);
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
+                        ft.commit();
+                    }
+
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             return false;
         }
     }
+    /*
+        @Override
+        public boolean onOptionsItemSelected(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.menuSearch:
+                    Intent intent = new Intent(MainActivity.this, SavedActivity.class);
+                    startActivity(intent);
+                    return true;
 
-    public List<Filmes>  getLista(){
-            List<Filmes> listaFilmes = new List<Filmes>() {
-                @Override
-                public int size() {
-                    return 0;
-                }
+                default:
+                    return super.onOptionsItemSelected(menuItem);
+            }
+        }
+        */
+    public class GetJson extends AsyncTask<String, Void, ArrayList<Filme>> {
+        private Context context;
+        private ProgressDialog load;
 
-                @Override
-                public boolean isEmpty() {
-                    return false;
-                }
+        public GetJson(Context context) {
+            this.context = context;
+        }
 
-                @Override
-                public boolean contains(Object o) {
-                    return false;
-                }
+        @Override
+        protected void onPreExecute() {
+            load = ProgressDialog.show(context, "", "Loading...", true);
+        }
 
-                @NonNull
-                @Override
-                public Iterator<Filmes> iterator() {
-                    return null;
-                }
+        @Override
+        protected ArrayList<Filme> doInBackground(String... params) {
+            Utils util = new Utils();
 
-                @NonNull
-                @Override
-                public Object[] toArray() {
-                    return new Object[0];
-                }
+            return util.getInformacaoArray(params[0]);
+        }
 
-                @NonNull
-                @Override
-                public <T> T[] toArray(@NonNull T[] a) {
-                    return null;
-                }
-
-                @Override
-                public boolean add(Filmes filmes) {
-                    return false;
-                }
-
-                @Override
-                public boolean remove(Object o) {
-                    return false;
-                }
-
-                @Override
-                public boolean containsAll(@NonNull Collection<?> c) {
-                    return false;
-                }
-
-                @Override
-                public boolean addAll(@NonNull Collection<? extends Filmes> c) {
-                    return false;
-                }
-
-                @Override
-                public boolean addAll(int index, @NonNull Collection<? extends Filmes> c) {
-                    return false;
-                }
-
-                @Override
-                public boolean removeAll(@NonNull Collection<?> c) {
-                    return false;
-                }
-
-                @Override
-                public boolean retainAll(@NonNull Collection<?> c) {
-                    return false;
-                }
-
-                @Override
-                public void clear() {
-
-                }
-
-                @Override
-                public boolean equals(Object o) {
-                    return false;
-                }
-
-                @Override
-                public int hashCode() {
-                    return 0;
-                }
-
-                @Override
-                public Filmes get(int index) {
-                    return null;
-                }
-
-                @Override
-                public Filmes set(int index, Filmes element) {
-                    return null;
-                }
-
-                @Override
-                public void add(int index, Filmes element) {
-
-                }
-
-                @Override
-                public Filmes remove(int index) {
-                    return null;
-                }
-
-                @Override
-                public int indexOf(Object o) {
-                    return 0;
-                }
-
-                @Override
-                public int lastIndexOf(Object o) {
-                    return 0;
-                }
-
-                @Override
-                public ListIterator<Filmes> listIterator() {
-                    return null;
-                }
-
-                @NonNull
-                @Override
-                public ListIterator<Filmes> listIterator(int index) {
-                    return null;
-                }
-
-                @NonNull
-                @Override
-                public List<Filmes> subList(int fromIndex, int toIndex) {
-                    return null;
-                }
-            };
+        @Override
+        protected void onPostExecute(ArrayList<Filme> filmeObj) {
+            load.dismiss();
+        }
+    }
 
 
-            Filmes novo = new Filmes();
-            novo.setTitle("Harry Potter and the Deathly Hallows: Part 2");
-            listaFilmes.add(novo);
-            return listaFilmes;
+    public class GetJson2 extends AsyncTask<ArrayList<Filme>, Void, Void> {
+        ArrayList<Filme> list;
+        private Context context;
+        private ProgressDialog load;
+
+
+        @Override
+        protected void onPreExecute(){
+            load = ProgressDialog.show(context,"","Loading...",true);
+        }
+
+        public GetJson2(Context context) {
+            list = new ArrayList<Filme>();
+            this.context = context;
+        }
+
+
+
+        @Override
+        protected Void doInBackground(ArrayList<Filme>... params) {
+            Utils util = new Utils();
+
+            for (Filme f : params[0]) {
+                f = util.getInformacao("http://www.omdbapi.com/?i=" + f.getImdbID());
+                // f = util.getInformacao("http://www.omdbapi.com/?t=" + f.getTitle().replace(' ', '+'));
+
+                list.add(f);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v){
+            load.dismiss();
+        }
+
+        public ArrayList<Filme> getLista() {
+            return list;
+        }
+
     }
 }

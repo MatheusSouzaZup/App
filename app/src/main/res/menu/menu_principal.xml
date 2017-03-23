@@ -2,23 +2,17 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:id="@+id/menuSearch"
+        android:title="Search"
+        android:icon="@mipmap/ic_search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always"
+        ></item>
     <item android:title="Biblioteca"
         android:id = "@+id/action_movies"
         android:orderInCategory="100"
         android:icon="@drawable/ic_saved"
         app:showAsAction="always"/>
 
-    <!--
-    <item android:title="Voltar"
-        android:id = "@+id/action_voltar"
-        android:orderInCategory="100"
-        app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/item_pesquisa"
-        android:icon="@drawable/ic_search_black_24dp"
-        android:orderInCategory="200"
-        android:title="Pesquisa"
-        android:actionViewClass="android.widget.SearchView"
-        app:showAsAction="always" />-->
 </menu>

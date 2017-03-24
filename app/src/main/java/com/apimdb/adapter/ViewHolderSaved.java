@@ -9,16 +9,18 @@ import android.widget.TextView;
 import com.apimdb.R;
 
 /**
- * Created by ZUP on 20/03/2017.
+ * Created by ZUP on 24/03/2017.
  */
 
-public class MyViewHolder extends RecyclerView.ViewHolder{
+
+public class ViewHolderSaved extends RecyclerView.ViewHolder {
     public ImageView imMovie;
     public TextView tvTitle;
     public TextView tvDescription;
     public Button btnExpand;
     public Button btnSalvar;
-    public MyViewHolder(View itemView) {
+
+    public ViewHolderSaved(View itemView) {
         super(itemView);
 
         imMovie = (ImageView) itemView.findViewById(R.id.my_image);

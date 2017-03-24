@@ -2,6 +2,8 @@ package com.apimdb.domain;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
+
 /**
  * Created by Matheus on 19/03/2017.
  */
@@ -159,5 +161,22 @@ public class Filme {
 
     public void setImagem(Bitmap imagem) {
         this.imagem = imagem;
+    }
+
+    public ArrayList<Filme> getLista(){
+        ArrayList<Filme> lista = new ArrayList<Filme>();
+        Filme novo;
+
+        novo = new Filme();
+        novo.setTitle("Harry Potter");
+        novo.setPlot("Harry...");
+        lista.add(novo);
+
+        novo = new Filme();
+        novo.setTitle("Fast and Furious");
+        novo.setPlot("Brian O'Conner");
+        lista.add(novo);
+
+        return lista;
     }
 }

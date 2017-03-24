@@ -88,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
-    /*
+
         @Override
         public boolean onOptionsItemSelected(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
-                case R.id.menuSearch:
+                case R.id.menuSavedMovies:
                     Intent intent = new Intent(MainActivity.this, SavedActivity.class);
                     startActivity(intent);
                     return true;
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     return super.onOptionsItemSelected(menuItem);
             }
         }
-        */
+
     public class GetJson extends AsyncTask<String, Void, ArrayList<Filme>> {
         private Context context;
         private ProgressDialog load;

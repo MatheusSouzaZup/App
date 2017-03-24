@@ -9,7 +9,7 @@
         app:showAsAction="always"
         ></item>
     <item android:title="Biblioteca"
-        android:id = "@+id/action_movies"
+        android:id = "@+id/menuSavedMovies"
         android:orderInCategory="100"
         android:icon="@drawable/ic_saved"
         app:showAsAction="always"/>

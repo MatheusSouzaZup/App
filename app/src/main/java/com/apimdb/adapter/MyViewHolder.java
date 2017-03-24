@@ -1,5 +1,6 @@
 package com.apimdb.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -17,12 +18,14 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
     public TextView tvTitle;
     public TextView tvDescription;
     public Button btnExpand;
-    public Button btnSalvar;
+    public Button btnAdicionar;
     public MyViewHolder(View itemView) {
         super(itemView);
 
         imMovie = (ImageView) itemView.findViewById(R.id.my_image);
         tvTitle = (TextView) itemView.findViewById(R.id.my_title);
         tvDescription = (TextView) itemView.findViewById(R.id.my_description);
+        btnExpand = (Button) itemView.findViewById(R.id.btnExpandir);
+        btnAdicionar = (Button) itemView.findViewById(R.id.btnAdicionar);
     }
 }

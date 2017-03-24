@@ -174,9 +174,16 @@ public class Filme {
 
         novo = new Filme();
         novo.setTitle("Fast and Furious");
-        novo.setPlot("Brian O'Conner");
+        novo.setPlot("Brian O'Conner...");
         lista.add(novo);
 
+        novo = new Filme();
+        novo.setTitle("The Interview");
+        novo.setPlot("Na Coreia do Sul...");
+        novo.setWriter("James Franco");
+        novo.setActors("James Franco, Seth Rogan");
+
+        lista.add(novo);
         return lista;
     }
 }

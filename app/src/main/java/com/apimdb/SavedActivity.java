@@ -13,9 +13,10 @@ public class SavedActivity extends AppCompatActivity {
     private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved);
+        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         Filme filme = new Filme();
         MovieFragmentSaved fra = (MovieFragmentSaved) getSupportFragmentManager().findFragmentByTag("mainFragSaved");

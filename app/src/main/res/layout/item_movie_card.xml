@@ -42,7 +42,7 @@
         android:paddingBottom="24dp"
         android:textSize="14sp"/>
         <Button
-            android:id="@+id/adicionar"
+            android:id="@+id/btnAdicionar"
             android:layout_below="@+id/my_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,13 +52,13 @@
             android:layout_marginStart="80dp" />
 
         <Button
-            android:id="@+id/expandir"
+            android:id="@+id/btnExpandir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="Expandir"
-            android:layout_alignBaseline="@+id/adicionar"
-            android:layout_alignBottom="@+id/adicionar"
+            android:layout_alignBaseline="@+id/btnAdicionar"
+            android:layout_alignBottom="@+id/btnAdicionar"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="80dp"

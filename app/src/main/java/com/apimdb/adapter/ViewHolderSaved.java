@@ -18,7 +18,7 @@ public class ViewHolderSaved extends RecyclerView.ViewHolder {
     public TextView tvTitle;
     public TextView tvDescription;
     public Button btnExpand;
-    public Button btnSalvar;
+    public Button btnRemover;
 
     public ViewHolderSaved(View itemView) {
         super(itemView);
@@ -26,5 +26,7 @@ public class ViewHolderSaved extends RecyclerView.ViewHolder {
         imMovie = (ImageView) itemView.findViewById(R.id.my_image);
         tvTitle = (TextView) itemView.findViewById(R.id.my_title);
         tvDescription = (TextView) itemView.findViewById(R.id.my_description);
+        btnRemover = (Button) itemView.findViewById(R.id.btnRemove);
+        btnExpand = (Button) itemView.findViewById(R.id.btnExpandirSaved);
     }
 }

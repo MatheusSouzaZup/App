@@ -37,16 +37,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuItem item = menu.findItem(R.id.menuSearch);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_principal, menu);
         Log.i("Mensagem", "Aqui");
-
+        android.widget.SearchView sv = (android.widget.SearchView) menu.findItem(R.id.menuSearch).getActionView();
+        sv.setOnQueryTextListener(new SearchFiltro());
 
 
         return super.onCreateOptionsMenu(menu);
     }
-    private class SearchFiltro implements SearchView.OnQueryTextListener {
+    private class SearchFiltro implements android.widget.SearchView.OnQueryTextListener {
 
         @Override
         public boolean onQueryTextChange(String newText) {
@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onQueryTextSubmit(String query) {
-            Log.i("Script", "onQueryTextSubmit->" + query);
                 String x = query.toString().replace(' ', '+');
                 GetJson download = new GetJson(MainActivity.this);
                 GetJson2 download2 = new GetJson2(MainActivity.this);

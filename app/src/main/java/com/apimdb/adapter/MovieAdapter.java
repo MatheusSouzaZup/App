@@ -35,7 +35,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         //TODO
         holder.tvTitle.setText(myList.get(position).getTitle());
-        holder.tvDescription.setText(myList.get(position).getPlot());
+        holder.tvPlot.setText(myList.get(position).getPlot());
     }
 
     @Override

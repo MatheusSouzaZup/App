@@ -25,7 +25,8 @@ public class MovieFragment extends android.support.v4.app.Fragment {
         public MovieFragment(ArrayList<Filme> l)
         {
             myList = l;
-            Log.i("Lista",l.get(0).getTitle());
+            Log.i("Lista",l.get(0).getPlot());
+
         }
         @Override
     public View onCreateView(LayoutInflater inflater,

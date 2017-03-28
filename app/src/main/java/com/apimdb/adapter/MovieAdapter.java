@@ -33,7 +33,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        //TODO
+
+        holder.imMovie.setImageBitmap(myList.get(position).getImagem());
         holder.tvTitle.setText(myList.get(position).getTitle());
         holder.tvPlot.setText(myList.get(position).getPlot());
     }

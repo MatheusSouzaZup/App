@@ -24,11 +24,7 @@ public class MovieFragmentSaved extends android.support.v4.app.Fragment {
     private RecyclerView myRecyclerView;
     private ArrayList<Filme> myList;
 
-        public MovieFragmentSaved(ArrayList<Filme> l)
-        {
-            myList = l;
-            Log.i("Lista",l.get(0).getTitle());
-        }
+
         @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,

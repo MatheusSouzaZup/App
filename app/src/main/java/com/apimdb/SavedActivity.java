@@ -22,7 +22,7 @@ public class SavedActivity extends AppCompatActivity {
         MovieFragmentSaved fra = (MovieFragmentSaved) getSupportFragmentManager().findFragmentByTag("mainFragSaved");
 
         if (fra == null) {
-            fra = new MovieFragmentSaved(filme.getLista());
+            fra = new MovieFragmentSaved();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.myIncFragmentContainer, fra, "mainFragSaved");
             ft.commit();

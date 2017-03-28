@@ -22,6 +22,7 @@ import com.apimdb.fragments.MovieFragment;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar myToolbar;
+    public ArrayList<Filme> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 download.execute("http://www.omdbapi.com/?s=" + x);
 
                 try {
-                    ArrayList<Filme> list;
+
                     list = download.get();
                     download2.execute(list);
                     list = download2.getLista();
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     MovieFragment fra = (MovieFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
 
                     if (fra == null) {
-                        fra = new MovieFragment(list);
+                        fra = new MovieFragment();
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
                         ft.commit();

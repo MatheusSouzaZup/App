@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import com.apimdb.MainActivity;
 import com.apimdb.R;
 import com.apimdb.adapter.MovieAdapter;
 import com.apimdb.domain.Filme;
@@ -22,12 +23,6 @@ public class MovieFragment extends android.support.v4.app.Fragment {
     private RecyclerView myRecyclerView;
     private ArrayList<Filme> myList;
 
-        public MovieFragment(ArrayList<Filme> l)
-        {
-            myList = l;
-            Log.i("Lista",l.get(0).getPlot());
-
-        }
         @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
@@ -48,7 +43,7 @@ public class MovieFragment extends android.support.v4.app.Fragment {
                     LinearLayoutManager llm =(LinearLayoutManager) myRecyclerView.getLayoutManager();
                     MovieAdapter adapter = (MovieAdapter) myRecyclerView.getAdapter();
                         if(myList.size() == llm.findLastCompletelyVisibleItemPosition()+1){
-                            //Testing
+
                             ArrayList<Filme> listAux =  myList;
                                 for (int i = 0; i<listAux.size();i++){
                                     adapter.addListItem(listAux.get(i),myList.size());
@@ -60,7 +55,7 @@ public class MovieFragment extends android.support.v4.app.Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getActivity());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             myRecyclerView.setLayoutManager(llm);
-            //Testing
+            myList = ((MainActivity) getActivity()).list;
             MovieAdapter adapter = new MovieAdapter(myList,getActivity());
 
             myRecyclerView.setAdapter(adapter);

@@ -34,9 +34,10 @@ public class ExtendActivity extends AppCompatActivity {
             }
             image = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
 
+            ivImage = (ImageView) findViewById(R.id.extend_my_image);
             tvTitle = (TextView) findViewById(R.id.extend_my_title);
             tvInfos = (TextView) findViewById(R.id.extent_my_plot);
-            ivImage = (ImageView) findViewById(R.id.extend_my_image);
+
 
             ivImage.setImageBitmap(image);
             tvTitle.setText(title);

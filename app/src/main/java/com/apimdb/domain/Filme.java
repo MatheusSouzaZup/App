@@ -163,6 +163,15 @@ public class Filme {
         this.imagem = imagem;
     }
 
+    @Override
+    public String toString() {
+        return "Plot: " + getPlot()+ "\n"+
+                "Actors: " + getActors() + "\n"+
+                "Writers: "+ getDirector() +"\n"+
+                "Genre: "+ getGenre() + "\n"+
+                "Released: "+ getReleased() + "\n";
+    }
+
     public ArrayList<Filme> getLista(){
         ArrayList<Filme> lista = new ArrayList<Filme>();
         Filme novo;

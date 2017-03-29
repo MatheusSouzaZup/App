@@ -2,6 +2,8 @@ package com.apimdb.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,8 @@ import com.apimdb.ExtendActivity;
 import com.apimdb.R;
 import com.apimdb.domain.Filme;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 
@@ -41,9 +45,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         Drawable drawable;
+        Bitmap bitmap;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        final byte[] bitMapData = stream.toByteArray();
         holder.imMovie.setImageBitmap(myList.get(position).getImagem());
         holder.tvTitle.setText(myList.get(position).getTitle());
         holder.tvPlot.setText(myList.get(position).getPlot());
+        drawable = holder.imMovie.getDrawable();
+        bitmap = ((BitmapDrawable)drawable).getBitmap();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100, stream);
+
+
         holder.btnExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,7 +63,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
                 bundle.putString("title", myList.get(position).getTitle());
                 bundle.putString("infos",myList.get(position).toString());
-                bundle.putSerializable("image", myList.get(position).getPoster());
+                bundle.putSerializable("image", bitMapData);
                 Intent intent = new Intent(context, ExtendActivity.class);
                 intent.putExtras(bundle);
 

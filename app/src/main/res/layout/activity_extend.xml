@@ -16,7 +16,7 @@
         android:id="@+id/extend_my_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/my_image"
+        android:layout_below="@+id/extend_my_image"
         android:paddingLeft="16dp"
         android:paddingTop="16dp"
         android:textColor="@color/colorAccent"

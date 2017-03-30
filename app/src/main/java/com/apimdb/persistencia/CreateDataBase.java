@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class CreateDataBase extends SQLiteOpenHelper{
 
     private static final String nome_banco = "bancoApi.db";
-    private static final String nome_tabela = "filmes_salvos";
+    public static final String nome_tabela = "salvos";
     public static DataBase tabela = new DataBase();
     private static final int version = 3;
 

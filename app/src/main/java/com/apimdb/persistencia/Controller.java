@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import com.apimdb.domain.Filme;
 import java.util.ArrayList;
 
@@ -25,9 +27,19 @@ public class Controller {
 
     }
     public synchronized long inserirDados(String table, ContentValues values){
+        long resultado = 0;
+        try{
+            db = createDataBase.getWritableDatabase();
+            resultado = db.insert(table,null,values);
+        }
+        catch (Exception ex)
+        {
+            Log.i("Mensagem", ex.getMessage());
+        }
+        finally {
+            db.close();
+        }
 
-        db = createDataBase.getWritableDatabase();
-        long resultado = db.insert(table,null,values);
 
         return resultado;
     }
@@ -56,7 +68,7 @@ public class Controller {
         Cursor cursor;
         cursor = this.CarregaDados("filmes_salvos", db.getCampos());
         Filme novo;
-        ArrayList<Filme> Lista = new ArrayList<Filme>();
+        ArrayList<Filme> lista = new ArrayList<Filme>();
         while (cursor != null) {
 
             novo = new Filme();
@@ -70,9 +82,9 @@ public class Controller {
            // novo.setImagem(cursor.getBlob(cursor.getColumnIndex("IMAGEM")));
 
             cursor.moveToNext();
-            Lista.add(novo);
+            lista.add(novo);
         }
 
-        return Lista;
+        return lista;
     }
 }

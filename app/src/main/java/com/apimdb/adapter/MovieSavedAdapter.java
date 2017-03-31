@@ -37,7 +37,7 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
 
     @Override
     public void onBindViewHolder(final ViewHolderSaved holder, int position) {
-
+        holder.imMovie.setImageBitmap(myList.get(position).getImagem());
         holder.tvTitle.setText(myList.get(position).getTitle());
         holder.tvDescription.setText(myList.get(position).getPlot());
 

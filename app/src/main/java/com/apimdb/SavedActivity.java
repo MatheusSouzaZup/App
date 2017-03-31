@@ -31,7 +31,7 @@ public class SavedActivity extends AppCompatActivity {
         Controller crud = new Controller(getBaseContext());
         String campos[] = {CreateDataBase.tabela.TITLE, CreateDataBase.tabela.PLOT, CreateDataBase.tabela.YEAR, CreateDataBase.tabela.DIRECTOR, CreateDataBase.tabela.ACTORS, CreateDataBase.tabela.GENRE, CreateDataBase.tabela.RUNTIME, CreateDataBase.tabela.RATED, CreateDataBase.tabela.RELEASED, CreateDataBase.tabela.IMDBID, CreateDataBase.tabela.IMDBRATING, CreateDataBase.tabela.LANGUAGE, CreateDataBase.tabela.IMAGE};
 
-        Cursor cursor = crud.CarregaDados(CreateDataBase.nome_tabela, campos);
+        Cursor cursor = crud.CarregaDados(CreateDataBase.NOME_TABELA, campos);
 
         //  FilmeObj filmeObj = new FilmeObj();
         myList = new ArrayList<Filme>();

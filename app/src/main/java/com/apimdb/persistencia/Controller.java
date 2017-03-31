@@ -18,28 +18,15 @@ public class Controller {
 
     private CreateDataBase createDataBase;
     private SQLiteDatabase db;
-
     public Controller(Context context){
+        createDataBase = new CreateDataBase(context);
         createDataBase.getInstance(context);
-
-    }
-    public  Controller(){
 
     }
     public synchronized long inserirDados(String table, ContentValues values){
         long resultado = 0;
-        try{
             db = createDataBase.getWritableDatabase();
             resultado = db.insert(table,null,values);
-        }
-        catch (Exception ex)
-        {
-            Log.i("Mensagem", ex.getMessage());
-        }
-        finally {
-            db.close();
-        }
-
 
         return resultado;
     }

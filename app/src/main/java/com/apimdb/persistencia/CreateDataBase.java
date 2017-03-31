@@ -10,16 +10,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class CreateDataBase extends SQLiteOpenHelper{
 
-    private static final String nome_banco = "bancoApi.db";
-    public static final String nome_tabela = "salvos";
+    private static final String NOME = "bancoApi.db";
+    public static final String NOME_TABELA = "salvos";
     public static DataBase tabela = new DataBase();
-    private static final int version = 3;
+    private static final int VERSION = 3;
+    private static CreateDataBase instance;
 
     public CreateDataBase(Context context)
     {
-        super(context,nome_banco,null,version);
+        super(context,NOME,null,VERSION);
+
     }
-    private static CreateDataBase instance;
+
+
     public static synchronized CreateDataBase getInstance(Context context){
         if(instance == null)
             instance = new CreateDataBase(context);
@@ -27,13 +30,13 @@ public class CreateDataBase extends SQLiteOpenHelper{
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE " + nome_tabela + "(" + tabela.campos() + ")";
+        String sql = "CREATE TABLE " + NOME_TABELA + "(" + tabela.campos() + ")";
         db.execSQL(sql);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + nome_tabela);
+        db.execSQL("DROP TABLE IF EXISTS " + NOME_TABELA);
         this.onCreate(db);
     }
 }

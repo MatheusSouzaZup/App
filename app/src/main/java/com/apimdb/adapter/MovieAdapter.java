@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -23,6 +24,7 @@ import com.apimdb.SavedActivity;
 import com.apimdb.domain.Filme;
 import com.apimdb.persistencia.Controller;
 import com.apimdb.persistencia.CreateDataBase;
+import com.apimdb.persistencia.DataBase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -54,6 +56,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
+
+
         holder.imMovie.setImageBitmap(myList.get(position).getImagem());
         holder.tvTitle.setText(myList.get(position).getTitle());
         holder.tvPlot.setText(myList.get(position).getPlot());
@@ -103,7 +107,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
                      values.put("IMDBRATING", myList.get(position).getImdbRating());
                      //values.put("POSTER", myList.get(position).getPoster());
 
-                     long resultado = controllerDB.inserirDados(CreateDataBase.nome_tabela, values);
+                     long resultado = controllerDB.inserirDados(CreateDataBase.NOME_TABELA, values);
                      Log.i("Msg", String.valueOf(resultado));
                      if (resultado == -1) {
                          Toast.makeText(context, "This movie is already saved!", Toast.LENGTH_SHORT).show();

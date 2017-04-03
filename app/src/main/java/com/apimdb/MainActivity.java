@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onQueryTextSubmit(String query) {
-                String x = query.toString().replace(' ', '+');
+                String search = query.toString().replace(' ', '+');
                 GetJson download = new GetJson(MainActivity.this);
                 GetJson2 download2 = new GetJson2(MainActivity.this);
-                download.execute("http://www.omdbapi.com/?s=" + x);
+                download.execute("http://www.omdbapi.com/?s=" + search);
 
                 try {
 

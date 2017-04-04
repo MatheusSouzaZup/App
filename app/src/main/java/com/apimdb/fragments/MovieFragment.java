@@ -36,7 +36,6 @@ public class MovieFragment extends android.support.v4.app.Fragment {
             myRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-
                     super.onScrollStateChanged(recyclerView, newState);
                 }
 
@@ -45,13 +44,10 @@ public class MovieFragment extends android.support.v4.app.Fragment {
                     super.onScrolled(recyclerView, dx, dy);
                     LinearLayoutManager llm =(LinearLayoutManager) myRecyclerView.getLayoutManager();
                     MovieAdapter adapter = (MovieAdapter) myRecyclerView.getAdapter();
-                    Log.i("Msg", "Antes");
-                        if(myList.size() == llm.findLastCompletelyVisibleItemPosition()+1){
-                            Log.i("Msg","Dentro do If");
-                            ArrayList<Filme> listAux =  ((MainActivity) getActivity()).list;
+                        if(myList.size() != llm.findLastCompletelyVisibleItemPosition()+1){
+                            ArrayList<Filme> listAux =  ((MainActivity) getActivity()).getList();
                                 for (int i = 0; i<listAux.size();i++){
                                     adapter.addListItem(listAux.get(i),myList.size());
-                                    Log.i("Teste","Loop");
                                 }
                         }
                 }
@@ -60,31 +56,11 @@ public class MovieFragment extends android.support.v4.app.Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getActivity());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             myRecyclerView.setLayoutManager(llm);
-            myList = ((MainActivity) getActivity()).list;
+            myList = ((MainActivity) getActivity()).getList();
             MovieAdapter adapter = new MovieAdapter(myList, getActivity());
             myRecyclerView.setAdapter(adapter);
 
-          //  new Wait();
-
-
             return view;
-        }
-        public class Wait {
-            Timer t;
-
-            public Wait() {
-                t = new Timer();
-                t.schedule(new Task(), 2000);
-            }
-
-            public class Task extends TimerTask {
-                public void run() {
-                    myList = ((MainActivity) getActivity()).list;
-                    MovieAdapter adapter = new MovieAdapter(myList, getActivity());
-                    myRecyclerView.setAdapter(adapter);
-                    t.cancel();
-                }
-            }
         }
 
 }

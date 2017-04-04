@@ -14,6 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import com.apimdb.connection.Utils;
 import com.apimdb.domain.Filme;
@@ -21,7 +23,7 @@ import com.apimdb.fragments.MovieFragment;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar myToolbar;
-    public ArrayList<Filme> list;
+    private ArrayList<Filme> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +54,12 @@ public class MainActivity extends AppCompatActivity {
         public boolean onQueryTextChange(String newText) {
 
             Log.i("Script", "onQueryTextChange->" + newText);
-
             return false;
         }
 
         @Override
         public boolean onQueryTextSubmit(String query) {
+
                 String search = query.toString().replace(' ', '+');
                 GetJson download = new GetJson(MainActivity.this);
                 GetJson2 download2 = new GetJson2(MainActivity.this);
@@ -83,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             return false;
         }
     }
@@ -100,7 +101,22 @@ public class MainActivity extends AppCompatActivity {
                     return super.onOptionsItemSelected(menuItem);
             }
         }
+    public ArrayList<Filme> getList(){
+        return list;
+    }
+    public void refresh(){          //refresh is onClick name given to the button
+        onRestart();
+    }
+    @Override
+    public void onRestart() {
 
+        super.onRestart();
+        Intent refresh = new Intent(this, MainActivity.class);
+        startActivity(refresh);//Start the same Activity
+        finish(); //finish Activity.
+
+
+    }
     public class GetJson extends AsyncTask<String, Void, ArrayList<Filme>> {
         private Context context;
         private ProgressDialog load;

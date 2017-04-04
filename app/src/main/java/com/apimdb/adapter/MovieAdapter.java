@@ -133,6 +133,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return myList.size();
     }
     public void addListItem(Filme f, int position){
+
+        if(myList.contains(f) == false) {
+            myList.add(f);
+        }
         notifyItemInserted(position);
     }
 

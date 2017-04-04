@@ -11,7 +11,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -132,6 +134,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public int getItemCount() {
         return myList.size();
     }
+
     public void addListItem(Filme f, int position){
 
         if(myList.contains(f) == false) {
@@ -140,5 +143,4 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
         notifyItemInserted(position);
     }
 
-
-}
+    }

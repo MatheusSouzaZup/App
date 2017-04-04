@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        myToolbar.setTitle("Lista");
+        myToolbar.setTitle("APIMDB");
         setSupportActionBar(myToolbar);
 
     }

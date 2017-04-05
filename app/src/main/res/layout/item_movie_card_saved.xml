@@ -16,52 +16,41 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/my_image"
+            android:id="@+id/my_image_saved"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
             android:src="@null" />
-
-        <TextView
-            android:id="@+id/my_title"
+        <ImageButton
+            android:id="@+id/imageButton_saved"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/my_image"
+            android:background="@null"
+            android:paddingTop="15dp"
+            app:srcCompat="@drawable/ic_heart_full"
+            android:layout_below="@+id/my_image_saved"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/my_title_saved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageButton_saved"
             android:paddingLeft="16dp"
             android:paddingTop="16dp"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/primary_text"
             android:textSize="24sp" />
 
     <TextView
-        android:id="@+id/my_description"
-        android:layout_below="@+id/my_title"
-        android:textColor="@color/colorAccent"
+        android:id="@+id/my_description_saved"
+        android:layout_below="@+id/my_title_saved"
+        android:textColor="@color/secondary_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
         android:paddingBottom="24dp"
         android:textSize="14sp"/>
-        <Button
-            android:id="@+id/btnRemove"
-            android:layout_below="@+id/my_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Remover"
-            android:layout_marginLeft="80dp"
-            android:layout_marginStart="80dp" />
 
-        <Button
-            android:id="@+id/btnExpandirSaved"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Expandir"
-            android:layout_alignBaseline="@+id/btnRemove"
-            android:layout_alignBottom="@+id/btnRemove"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="80dp"
-            android:layout_marginEnd="80dp" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

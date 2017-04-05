@@ -3,6 +3,7 @@ package com.apimdb;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -41,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_principal, menu);
-        Log.i("Mensagem", "Aqui");
         android.widget.SearchView sv = (android.widget.SearchView) menu.findItem(R.id.menuSearch).getActionView();
         sv.setOnQueryTextListener(new SearchFiltro());
 
@@ -59,31 +60,37 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onQueryTextSubmit(String query) {
+                boolean conection = checkConnection();
+                Log.i("Msg", "a");
+                if(conection == true) {
+                    String search = query.toString().replace(' ', '+');
+                    GetJson download = new GetJson(MainActivity.this);
+                    GetJson2 download2 = new GetJson2(MainActivity.this);
+                    download.execute("http://www.omdbapi.com/?s=" + search);
 
-                String search = query.toString().replace(' ', '+');
-                GetJson download = new GetJson(MainActivity.this);
-                GetJson2 download2 = new GetJson2(MainActivity.this);
-                download.execute("http://www.omdbapi.com/?s=" + search);
+                    try {
 
-                try {
+                        list = download.get();
+                        download2.execute(list);
+                        list = download2.getLista();
+                        ///Here
+                        MovieFragment fra = (MovieFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
 
-                    list = download.get();
-                    download2.execute(list);
-                    list = download2.getLista();
-                    ///Here
-                    MovieFragment fra = (MovieFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
+                        if (fra == null) {
+                            fra = new MovieFragment();
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
+                            ft.commit();
+                        }
 
-                    if (fra == null) {
-                        fra = new MovieFragment();
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
-                        ft.commit();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Sem Conexão", Toast.LENGTH_SHORT).show();
                 }
             return false;
         }
@@ -185,5 +192,19 @@ public class MainActivity extends AppCompatActivity {
             return list;
         }
 
+    }
+
+    public boolean checkConnection()
+    {
+        boolean conected;
+        ConnectivityManager conectivityManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+            if(conectivityManager.getActiveNetworkInfo() !=null
+                    && conectivityManager.getActiveNetworkInfo().isAvailable()
+                    && conectivityManager.getActiveNetworkInfo().isConnected()){
+                conected = true;
+            }else{
+                conected = false;
+            }
+            return conected;
     }
 }

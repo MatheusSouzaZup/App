@@ -60,8 +60,7 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
         bitmap.compress(Bitmap.CompressFormat.JPEG,100, stream);
         final byte[] bitMapData = stream.toByteArray();
 
-
-        holder.btnExpand.setOnClickListener(new View.OnClickListener() {
+        holder.imMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
@@ -75,7 +74,7 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
             }
         });
 
-        holder.btnRemover.setOnClickListener(new View.OnClickListener() {
+        holder.imageButton.setOnClickListener(new View.OnClickListener() {
 
 
             @Override

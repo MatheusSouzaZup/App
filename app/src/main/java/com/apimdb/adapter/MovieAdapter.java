@@ -73,8 +73,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
         bitmap.compress(Bitmap.CompressFormat.JPEG,100, stream);
         final byte[] bitMapData = stream.toByteArray();
 
-
-        holder.btnExpand.setOnClickListener(new View.OnClickListener() {
+        holder.imMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
@@ -87,39 +86,38 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 context.startActivity(intent);
             }
         });
-        holder.btnAdicionar.setOnClickListener(new View.OnClickListener() {
+        holder.imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (context.getClass().equals(MainActivity.class)) {
-                     ContentValues values = new ContentValues();
+                    ContentValues values = new ContentValues();
 
-                     values.put("TITLE", myList.get(position).getTitle());
-                     values.put("YEAR", myList.get(position).getYear());
-                     values.put("RATED", myList.get(position).getRated());
-                     values.put("RELEASED", myList.get(position).getReleased());
-                     values.put("RUNTIME", myList.get(position).getRuntime());
-                     values.put("GENRE", myList.get(position).getGenre());
-                     values.put("DIRECTOR", myList.get(position).getDirector());
-                     values.put("ACTORS", myList.get(position).getActors());
-                     values.put("PLOT", myList.get(position).getPlot());
-                     values.put("LANGUAGE", myList.get(position).getLanguage());
-                     values.put("IMAGE", bitmaptoblob(myList.get(position).getImagem()));
-                     values.put("IMDBID", myList.get(position).getImdbID());
-                     values.put("IMDBRATING", myList.get(position).getImdbRating());
-                     //values.put("POSTER", myList.get(position).getPoster());
+                    values.put("TITLE", myList.get(position).getTitle());
+                    values.put("YEAR", myList.get(position).getYear());
+                    values.put("RATED", myList.get(position).getRated());
+                    values.put("RELEASED", myList.get(position).getReleased());
+                    values.put("RUNTIME", myList.get(position).getRuntime());
+                    values.put("GENRE", myList.get(position).getGenre());
+                    values.put("DIRECTOR", myList.get(position).getDirector());
+                    values.put("ACTORS", myList.get(position).getActors());
+                    values.put("PLOT", myList.get(position).getPlot());
+                    values.put("LANGUAGE", myList.get(position).getLanguage());
+                    values.put("IMAGE", bitmaptoblob(myList.get(position).getImagem()));
+                    values.put("IMDBID", myList.get(position).getImdbID());
+                    values.put("IMDBRATING", myList.get(position).getImdbRating());
+                    //values.put("POSTER", myList.get(position).getPoster());
 
-                     long resultado = controllerDB.inserirDados(CreateDataBase.NOME_TABELA, values);
-                     Log.i("Msg", String.valueOf(resultado));
-                     if (resultado == -1) {
-                         Toast.makeText(context, "This movie is already saved!", Toast.LENGTH_SHORT).show();
+                    long resultado = controllerDB.inserirDados(CreateDataBase.NOME_TABELA, values);
+                    Log.i("Msg", String.valueOf(resultado));
+                    if (resultado == -1) {
+                        Toast.makeText(context, "This movie is already saved!", Toast.LENGTH_SHORT).show();
 
-                     } else {
-                         Toast.makeText(context, "Save", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Save", Toast.LENGTH_SHORT).show();
 
-                     }
-                 }
-
+                    }
+                }
             }
         });
     }

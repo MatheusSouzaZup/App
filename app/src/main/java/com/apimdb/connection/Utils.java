@@ -2,6 +2,7 @@ package com.apimdb.connection;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.util.Log;
 
 import com.apimdb.domain.Filme;
@@ -90,4 +91,6 @@ public class Utils {
             return null;
         }
     }
+
+
 }

@@ -11,7 +11,9 @@
 
         <activity
             android:windowSoftInputMode="adjustPan|adjustNothing"
-            android:name=".MainActivity">
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,8 +21,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".SavedActivity"
-            android:windowSoftInputMode="adjustPan|adjustNothing"/>
-        <activity android:name=".ExtendActivity"></activity>
+            android:windowSoftInputMode="adjustPan|adjustNothing"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ExtendActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

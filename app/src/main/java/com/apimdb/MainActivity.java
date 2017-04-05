@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        myToolbar.setTitle("APIMDB");
+        myToolbar.setTitle("Apimdb");
         setSupportActionBar(myToolbar);
 
     }
@@ -77,6 +77,12 @@ public class MainActivity extends AppCompatActivity {
                         MovieFragment fra = (MovieFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
 
                         if (fra == null) {
+                            fra = new MovieFragment();
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
+                            ft.commit();
+                        }
+                        else{
                             fra = new MovieFragment();
                             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                             ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");

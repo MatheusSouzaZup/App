@@ -52,24 +52,7 @@ public class SavedActivity extends AppCompatActivity {
             String language = cursor.getString(11);
             Bitmap imagem = blobtobitmap(cursor.getBlob(12));
 
-            /*
-            filmeObj.setTitle(cursor.getString(0));
-            filmeObj.setPlot(cursor.getString(1));
-            filmeObj.setYear(cursor.getString(2));
-            filmeObj.setDirector(cursor.getString(3));
-            filmeObj.setActors(cursor.getString(4));
-            filmeObj.setGenre(cursor.getString(5));
-            filmeObj.setRuntime(cursor.getString(6));
-            filmeObj.setRated(cursor.getString(7));
-            filmeObj.setReleased(cursor.getString(8));
-            filmeObj.setImdbID(cursor.getString(9));
-            filmeObj.setImdbRating(cursor.getString(10));
-            filmeObj.setLanguage(cursor.getString(11));
-            filmeObj.setImagem(blobtobitmap(cursor.getBlob(12)));
-            list.add(filmeObj);
-            */
 
-            // String imdbrating = cursor.getString(9);
             myList.add(new Filme(title,plot,year,director,actors,genre,runtime,rated,released,imdbid,imdbrating,language,imagem));
             cursor.moveToNext();
         }

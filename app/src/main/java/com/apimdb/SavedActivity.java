@@ -33,7 +33,6 @@ public class SavedActivity extends AppCompatActivity {
 
         Cursor cursor = crud.CarregaDados(CreateDataBase.NOME_TABELA, campos);
 
-        //  FilmeObj filmeObj = new FilmeObj();
         myList = new ArrayList<Filme>();
 
         for (int i = 0; i < cursor.getCount(); i++) {

@@ -1,11 +1,14 @@
 package com.apimdb.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AlertDialogLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +35,7 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
     private LayoutInflater myLayoutInflater;
     private Context context;
     private Controller controller;
+    private AlertDialog.Builder dialog;
     public MovieSavedAdapter(List<Filme> l, Context c){
         myList = l;
         myLayoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -76,14 +80,35 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
 
         holder.imageButton.setOnClickListener(new View.OnClickListener() {
 
-
             @Override
             public void onClick(View v) {
 
-                final String where = CreateDataBase.tabela.TITLE + "=" + "'" + myList.get(position).getTitle() + "'";
-                controller.DeletaDados(CreateDataBase.NOME_TABELA, where);
-                Toast.makeText(context, "Removed!", Toast.LENGTH_SHORT).show();
-                ((SavedActivity) context).refresh();
+                dialog = new AlertDialog.Builder(context);
+                dialog.setTitle("Confirmar Exclusao");
+                dialog.setMessage("Confirma a Exclusao?");
+
+                dialog.setNegativeButton("Nao",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }
+                );
+                dialog.setPositiveButton("Sim",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                final String where = CreateDataBase.tabela.TITLE + "=" + "'" + myList.get(position).getTitle() + "'";
+                                controller.DeletaDados(CreateDataBase.NOME_TABELA, where);
+                                Toast.makeText(context, "Removed!", Toast.LENGTH_SHORT).show();
+                                ((SavedActivity) context).refresh();
+
+                            }
+                        });
+                dialog.create();
+                dialog.show();
+
 
             }
         });

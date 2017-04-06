@@ -26,6 +26,8 @@ import com.apimdb.fragments.MovieFragment;
 public class MainActivity extends AppCompatActivity {
     private Toolbar myToolbar;
     private ArrayList<Filme> list;
+    private String search;
+    private String url = "http://www.omdbapi.com/?s=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,47 +62,52 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onQueryTextSubmit(String query) {
-                boolean conection = checkConnection();
-                Log.i("Msg", "a");
-                if(conection == true) {
-                    String search = query.toString().replace(' ', '+');
-                    GetJson download = new GetJson(MainActivity.this);
-                    GetJson2 download2 = new GetJson2(MainActivity.this);
-                    download.execute("http://www.omdbapi.com/?s=" + search);
-
-                    try {
-
-                        list = download.get();
-                        download2.execute(list);
-                        list = download2.getLista();
-                        ///Here
-                        MovieFragment fra = (MovieFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
-
-                        if (fra == null) {
-                            fra = new MovieFragment();
-                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                            ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
-                            ft.commit();
-                        }
-                        else{
-                            fra = new MovieFragment();
-                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                            ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
-                            ft.commit();
-                        }
-
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "Sem Conexão", Toast.LENGTH_SHORT).show();
-                }
+            search = query.toString().replace(' ', '+');
+            Search();
             return false;
         }
     }
+
+        public void Search() {
+            boolean conection = checkConnection();
+            if(conection == true) {
+
+                GetJson download = new GetJson(MainActivity.this);
+                GetJson2 download2 = new GetJson2(MainActivity.this);
+                download.execute( url + search);
+
+                try {
+
+                    list = download.get();
+                    download2.execute(list);
+                    list = download2.getLista();
+                    ///Here
+                    MovieFragment fra = (MovieFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
+
+                    if (fra == null) {
+                        fra = new MovieFragment();
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
+                        ft.commit();
+                    }
+                    else{
+                        fra = new MovieFragment();
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
+                        ft.commit();
+                    }
+
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                Toast.makeText(MainActivity.this, "Sem Conexão", Toast.LENGTH_SHORT).show();
+            }
+
+        }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem menuItem) {
@@ -114,22 +121,11 @@ public class MainActivity extends AppCompatActivity {
                     return super.onOptionsItemSelected(menuItem);
             }
         }
+
     public ArrayList<Filme> getList(){
         return list;
     }
-    public void refresh(){          //refresh is onClick name given to the button
-        onRestart();
-    }
-    @Override
-    public void onRestart() {
 
-        super.onRestart();
-        Intent refresh = new Intent(this, MainActivity.class);
-        startActivity(refresh);//Start the same Activity
-        finish(); //finish Activity.
-
-
-    }
     public class GetJson extends AsyncTask<String, Void, ArrayList<Filme>> {
         private Context context;
         private ProgressDialog load;
@@ -213,4 +209,11 @@ public class MainActivity extends AppCompatActivity {
             }
             return conected;
     }
+   @Override
+    public void onRestart(){
+        super.onRestart();
+        Search();
+
+    }
+
 }

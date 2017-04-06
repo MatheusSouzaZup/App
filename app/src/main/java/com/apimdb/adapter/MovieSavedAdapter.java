@@ -119,7 +119,6 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
         return myList.size();
     }
     public void addListItem(Filme f, int position){
-        myList.add(f);
         notifyItemInserted(position);
     }
 

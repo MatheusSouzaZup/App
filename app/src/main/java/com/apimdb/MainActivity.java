@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onQueryTextChange(String newText) {
 
-            Log.i("Script", "onQueryTextChange->" + newText);
             return false;
         }
 
@@ -209,11 +208,6 @@ public class MainActivity extends AppCompatActivity {
             }
             return conected;
     }
-   @Override
-    public void onRestart(){
-        super.onRestart();
-        Search();
 
-    }
 
 }

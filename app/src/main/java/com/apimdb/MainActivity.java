@@ -76,25 +76,9 @@ public class MainActivity extends AppCompatActivity {
                 download.execute( url + search);
 
                 try {
-
                     list = download.get();
                     download2.execute(list);
                     list = download2.getLista();
-                    ///Here
-                    MovieFragment fra = (MovieFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
-
-                    if (fra == null) {
-                        fra = new MovieFragment();
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
-                        ft.commit();
-                    }
-                    else{
-                        fra = new MovieFragment();
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
-                        ft.commit();
-                    }
 
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -149,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<Filme> filmeObj) {
             load.dismiss();
         }
+
     }
 
 
@@ -176,8 +161,6 @@ public class MainActivity extends AppCompatActivity {
 
             for (Filme f : params[0]) {
                 f = util.getInformacao("http://www.omdbapi.com/?i=" + f.getImdbID());
-                // f = util.getInformacao("http://www.omdbapi.com/?t=" + f.getTitle().replace(' ', '+'));
-
                 list.add(f);
             }
 
@@ -187,6 +170,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void v){
             load.dismiss();
+
+            MovieFragment fra = (MovieFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
+                fra = new MovieFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
+                ft.commit();
+
         }
 
         public ArrayList<Filme> getLista() {
@@ -208,6 +198,4 @@ public class MainActivity extends AppCompatActivity {
             }
             return conected;
     }
-
-
 }

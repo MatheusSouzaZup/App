@@ -58,12 +58,11 @@ public class SavedActivity extends AppCompatActivity {
 
         MovieFragmentSaved fra = (MovieFragmentSaved) getSupportFragmentManager().findFragmentByTag("mainFragSaved");
 
-        if (fra == null) {
             fra = new MovieFragmentSaved();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.myIncFragmentContainer, fra, "mainFragSaved");
+            ft.replace(R.id.myIncFragmentContainer_saved, fra, "mainFragSaved");
             ft.commit();
-        }
+
     }
     public void refresh(){          //refresh is onClick name given to the button
         onRestart();

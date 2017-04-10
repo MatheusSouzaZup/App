@@ -166,35 +166,14 @@ public class Filme {
     @Override
     public String toString() {
         return "Plot: " + getPlot()+ "\n"+
+                "Runtime: " + getRuntime() + "\n"+
                 "Actors: " + getActors() + "\n"+
                 "Writers: "+ getDirector() +"\n"+
                 "Genre: "+ getGenre() + "\n"+
-                "Released: "+ getReleased() + "\n";
+                "Released: "+ getReleased() + "\n"+
+                "Language: "+ getLanguage() + "\n"+
+                "IMDB Rating: "+ getImdbRating() + "\n";
+
     }
-
-    public ArrayList<Filme> getLista(){
-        ArrayList<Filme> lista = new ArrayList<Filme>();
-        Filme novo;
-
-        novo = new Filme();
-        novo.setTitle("Harry Potter");
-        novo.setPlot("Harry...");
-        lista.add(novo);
-
-        novo = new Filme();
-        novo.setTitle("Fast and Furious");
-        novo.setPlot("Brian O'Conner...");
-        lista.add(novo);
-
-        novo = new Filme();
-        novo.setTitle("The Interview");
-        novo.setPlot("Na Coreia do Sul...");
-        novo.setWriter("James Franco");
-        novo.setActors("James Franco, Seth Rogan");
-
-        lista.add(novo);
-        return lista;
-    }
-
 
 }

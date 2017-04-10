@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,10 +14,13 @@ public class ExtendActivity extends AppCompatActivity {
     private TextView tvTitle;
     private TextView tvInfos;
     private ImageView ivImage;
+    private Toolbar myToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extend);
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar_extend);
+        setSupportActionBar(myToolbar);
         Intent intent = getIntent();
         String title = "", infos="";
         Bitmap image;

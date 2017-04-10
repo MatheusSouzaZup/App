@@ -9,16 +9,14 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
+
 import com.apimdb.connection.Utils;
 import com.apimdb.domain.Filme;
 import com.apimdb.fragments.MovieFragment;
@@ -38,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setLogo(ic_filmreel_black);
         setSupportActionBar(myToolbar);
-
     }
 
 
@@ -110,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<Filme> getList(){
         return list;
     }
+
 
     public class GetJson extends AsyncTask<String, Void, ArrayList<Filme>> {
         private Context context;

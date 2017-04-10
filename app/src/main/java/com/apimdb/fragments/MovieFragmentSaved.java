@@ -30,7 +30,7 @@ public class MovieFragmentSaved extends android.support.v4.app.Fragment {
         @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
-                             Bundle savedInstanceState){
+                             Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_movies_saved,container,false);
             myRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_saved);
             myRecyclerView.setHasFixedSize(true);

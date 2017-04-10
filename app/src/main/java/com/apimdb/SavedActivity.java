@@ -17,6 +17,8 @@ import com.apimdb.persistencia.CreateDataBase;
 
 import java.util.ArrayList;
 
+import static com.apimdb.R.mipmap.ic_filmreel_black;
+
 public class SavedActivity extends AppCompatActivity {
     private Toolbar toolbar;
     public ArrayList<Filme> myList;
@@ -25,7 +27,9 @@ public class SavedActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved);
-        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.my_toolbar_saved);
+        toolbar.setLogo(ic_filmreel_black);
+        toolbar.setTitle("My Movies");
         setSupportActionBar(toolbar);
 
         Controller crud = new Controller(getBaseContext());

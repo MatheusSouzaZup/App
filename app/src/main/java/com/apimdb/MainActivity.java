@@ -23,6 +23,8 @@ import com.apimdb.connection.Utils;
 import com.apimdb.domain.Filme;
 import com.apimdb.fragments.MovieFragment;
 
+import static com.apimdb.R.mipmap.ic_filmreel_black;
+
 public class MainActivity extends AppCompatActivity {
     private Toolbar myToolbar;
     private ArrayList<Filme> list;
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        //myToolbar.setTitle("Apimdb");
+        myToolbar.setLogo(ic_filmreel_black);
         setSupportActionBar(myToolbar);
 
     }

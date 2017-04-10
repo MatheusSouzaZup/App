@@ -20,7 +20,7 @@ public class ExtendActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extend);
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar_extend);
-        setSupportActionBar(myToolbar);
+
         Intent intent = getIntent();
         String title = "", infos="";
         Bitmap image;
@@ -37,7 +37,8 @@ public class ExtendActivity extends AppCompatActivity {
                     }
             }
             image = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-
+            myToolbar.setTitle(title);
+            setSupportActionBar(myToolbar);
             ivImage = (ImageView) findViewById(R.id.extend_my_image);
             tvTitle = (TextView) findViewById(R.id.extend_my_title);
             tvInfos = (TextView) findViewById(R.id.extent_my_plot);

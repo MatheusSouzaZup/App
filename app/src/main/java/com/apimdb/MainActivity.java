@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,9 +18,18 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.apimdb.connection.Utils;
 import com.apimdb.domain.Filme;
 import com.apimdb.fragments.MovieFragment;
+
+import org.w3c.dom.Text;
 
 import static com.apimdb.R.mipmap.ic_filmreel_black;
 
@@ -28,6 +38,7 @@ public class MainActivity extends AppCompatActivity{
     private ArrayList<Filme> list;
     private String search;
     private String url = "http://www.omdbapi.com/?s=";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +73,33 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public boolean onQueryTextSubmit(String query) {
             search = query.toString().replace(' ', '+');
-            Search();
+            mySearch();
+         //   Search();
             return false;
         }
     }
     public String geturl(){
         return url +search;
     }
+        public void mySearch(){
+                StringRequest stringRequest = new StringRequest( Request.Method.GET, geturl(), new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println(response.toString());
+                        System.out.println("aqui");
+                    }
+
+                }, new ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("Erro");
+                        error.printStackTrace();
+                    }
+                }
+            );
+
+            MyApplication.getInstance().addToRequestQueue(stringRequest);
+        }
         public void Search() {
             boolean conection = checkConnection();
             if(conection == true) {
@@ -201,4 +232,6 @@ public class MainActivity extends AppCompatActivity{
             }
             return conected;
     }
+
+
 }

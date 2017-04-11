@@ -2,27 +2,25 @@ package com.apimdb.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TransferQueue;
 
 import com.apimdb.MainActivity;
 import com.apimdb.R;
 import com.apimdb.adapter.MovieAdapter;
 import com.apimdb.domain.Filme;
+
 /**
  * Created by Matheus on 19/03/2017.
  */
 
-public class MovieFragment extends android.support.v4.app.Fragment {
+public class MovieFragment extends Fragment {
 
     private RecyclerView myRecyclerView;
     private ArrayList<Filme> myList;
@@ -67,4 +65,5 @@ public class MovieFragment extends android.support.v4.app.Fragment {
         MovieAdapter adapter = new MovieAdapter(myList, getActivity());
         myRecyclerView.setAdapter(adapter);
     }
+
 }

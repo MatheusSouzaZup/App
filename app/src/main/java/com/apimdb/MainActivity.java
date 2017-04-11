@@ -23,7 +23,7 @@ import com.apimdb.fragments.MovieFragment;
 
 import static com.apimdb.R.mipmap.ic_filmreel_black;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     private Toolbar myToolbar;
     private ArrayList<Filme> list;
     private String search;
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
     private class SearchFiltro implements android.widget.SearchView.OnQueryTextListener {
 
         @Override
@@ -65,7 +66,9 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
-
+    public String geturl(){
+        return url +search;
+    }
         public void Search() {
             boolean conection = checkConnection();
             if(conection == true) {

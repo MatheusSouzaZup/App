@@ -62,7 +62,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         holder.imMovie.setImageBitmap(myList.get(position).getImagem());
         holder.tvTitle.setText(myList.get(position).getTitle());
-        holder.tvPlot.setText(myList.get(position).getPlot());
 
         //Configurando Imagem para mandar a outra activity
         Drawable drawable;
@@ -106,7 +105,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
                     values.put("IMAGE", bitmaptoblob(myList.get(position).getImagem()));
                     values.put("IMDBID", myList.get(position).getImdbID());
                     values.put("IMDBRATING", myList.get(position).getImdbRating());
-                    //values.put("POSTER", myList.get(position).getPoster());
+                    values.put("POSTER", myList.get(position).getPoster());
 
                     long resultado = controllerDB.inserirDados(CreateDataBase.NOME_TABELA, values);
                     Log.i("Msg", String.valueOf(resultado));

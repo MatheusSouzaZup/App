@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.apimdb.MainActivity;
 import com.apimdb.R;
@@ -23,7 +24,7 @@ import com.apimdb.domain.Filme;
 public class MovieFragment extends Fragment {
 
     private RecyclerView myRecyclerView;
-    private ArrayList<Filme> myList;
+    private List<Filme> myList;
 
         @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -49,7 +50,7 @@ public class MovieFragment extends Fragment {
                 LinearLayoutManager llm =(LinearLayoutManager) myRecyclerView.getLayoutManager();
                 MovieAdapter adapter = (MovieAdapter) myRecyclerView.getAdapter();
                 if(myList.size() != llm.findLastCompletelyVisibleItemPosition()+1){
-                    ArrayList<Filme> listAux =  ((MainActivity) getActivity()).getList();
+                    List<Filme> listAux =  ((MainActivity) getActivity()).getList();
                     for (int i = 0; i<listAux.size();i++){
                         adapter.addListItem(listAux.get(i),myList.size());
                     }

@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import com.android.volley.Request;
@@ -23,19 +25,25 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.apimdb.connection.Utils;
 import com.apimdb.domain.Filme;
 import com.apimdb.fragments.MovieFragment;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import static com.apimdb.R.mipmap.ic_filmreel_black;
 
 public class MainActivity extends AppCompatActivity{
     private Toolbar myToolbar;
-    private ArrayList<Filme> list;
+    private List<Filme> list = new ArrayList<Filme>();
     private String search;
     private String url = "http://www.omdbapi.com/?s=";
 
@@ -81,12 +89,21 @@ public class MainActivity extends AppCompatActivity{
     public String geturl(){
         return url +search;
     }
+
         public void mySearch(){
-                StringRequest stringRequest = new StringRequest( Request.Method.GET, geturl(), new Response.Listener<String>() {
+            final Utils util = new Utils();
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, geturl(), new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
-                        System.out.println(response.toString());
-                        System.out.println("aqui");
+                    public void onResponse(JSONObject response) {
+                        List<Filme> movies = null;
+                        try {
+                            movies = Arrays.asList(new Gson().fromJson(response.getJSONArray("Search").toString(), Filme[].class));
+                            list = util.getImages(movies);
+                            callMovieFragment();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                 }, new ErrorListener() {
@@ -98,9 +115,21 @@ public class MainActivity extends AppCompatActivity{
                 }
             );
 
-            MyApplication.getInstance().addToRequestQueue(stringRequest);
+            MyApplication.getInstance().addToRequestQueue(request);
+
         }
-        public void Search() {
+        public void callMovieFragment(){
+            MovieFragment fra = (MovieFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
+            fra = new MovieFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.myIncFragmentContainer, fra, "mainFrag");
+            ft.commit();
+        }
+
+        public String getUrlAllInformation(String imdbid) {
+            return  "http://www.omdbapi.com/?i=" + imdbid;
+        }
+      /*  public void Search() {
             boolean conection = checkConnection();
             if(conection == true) {
 
@@ -124,6 +153,7 @@ public class MainActivity extends AppCompatActivity{
             }
 
         }
+        */
 
         @Override
         public boolean onOptionsItemSelected(MenuItem menuItem) {
@@ -138,12 +168,12 @@ public class MainActivity extends AppCompatActivity{
             }
         }
 
-    public ArrayList<Filme> getList(){
+    public List<Filme> getList(){
         return list;
     }
 
 
-    public class GetJson extends AsyncTask<String, Void, ArrayList<Filme>> {
+    /*public class GetJson extends AsyncTask<String, Void, ArrayList<Filme>> {
         private Context context;
         private ProgressDialog load;
 
@@ -218,6 +248,7 @@ public class MainActivity extends AppCompatActivity{
         }
 
     }
+    */
 
     public boolean checkConnection()
     {

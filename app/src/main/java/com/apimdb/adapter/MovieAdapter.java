@@ -1,5 +1,6 @@
 package com.apimdb.adapter;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -19,17 +22,29 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.apimdb.ExtendActivity;
 import com.apimdb.MainActivity;
+import com.apimdb.MyApplication;
 import com.apimdb.R;
 import com.apimdb.SavedActivity;
+import com.apimdb.connection.Utils;
 import com.apimdb.domain.Filme;
 import com.apimdb.persistencia.Controller;
 import com.apimdb.persistencia.CreateDataBase;
 import com.apimdb.persistencia.DataBase;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -57,35 +72,35 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
-
-
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.imMovie.setImageBitmap(myList.get(position).getImagem());
         holder.tvTitle.setText(myList.get(position).getTitle());
+            holder.imMovie.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Configurando Imagem para mandar a outra activity
+                        Drawable drawable;
+                        Bitmap bitmap;
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        drawable = holder.imMovie.getDrawable();
+                        bitmap = ((BitmapDrawable)drawable).getBitmap();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG,100, stream);
+                        final byte[] bitMapData = stream.toByteArray();
+                        Bundle bundle = new Bundle();
 
-        //Configurando Imagem para mandar a outra activity
-        Drawable drawable;
-        Bitmap bitmap;
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        drawable = holder.imMovie.getDrawable();
-        bitmap = ((BitmapDrawable)drawable).getBitmap();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100, stream);
-        final byte[] bitMapData = stream.toByteArray();
+                        bundle.putString("imdbid",myList.get(position).getImdbID());
+                        bundle.putInt("pos",position);
+                        bundle.putString("title", myList.get(position).getTitle());
+                        bundle.putSerializable("image", bitMapData);
+                        Intent intent = new Intent(context, ExtendActivity.class);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                    }
+                });
 
-        holder.imMovie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
 
-                bundle.putString("title", myList.get(position).getTitle());
-                bundle.putString("infos",myList.get(position).toString());
-                bundle.putSerializable("image", bitMapData);
-                Intent intent = new Intent(context, ExtendActivity.class);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
-            }
-        });
-        holder.imageButton.setOnClickListener(new View.OnClickListener() {
+
+                holder.imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -126,7 +141,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
     }
-
     @Override
     public int getItemCount() {
         return myList.size();

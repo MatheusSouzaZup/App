@@ -1,15 +1,23 @@
 package com.apimdb.domain;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.widget.ImageView;
 
+import com.apimdb.R;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Matheus on 19/03/2017.
  */
 
-public class Filme {
-
+public class Movie {
+    List<Movie> oscarList = new ArrayList<>();
     private String Title;
     private String Plot;
     private String Year;
@@ -26,7 +34,7 @@ public class Filme {
     private String Poster;
     private Bitmap imagem;
 
-    public Filme(String title , String plot, String year, String director, String actors, String genre, String runtime, String rated, String released, String imdbid, String imdbrating, String language, Bitmap imagem) {
+    public Movie(String title , String plot, String year, String director, String actors, String genre, String runtime, String rated, String released, String imdbid, String imdbrating, String language, Bitmap imagem) {
         this.Title = title;
         this.Plot = plot;
         this.Year = year;
@@ -41,7 +49,7 @@ public class Filme {
         this.Language = language;
         this.imagem = imagem;
     }
-    public Filme(){}
+    public Movie(){}
 
     public String getTitle() {
         return Title;
@@ -174,6 +182,65 @@ public class Filme {
                 "Language: "+ getLanguage() + "\n"+
                 "IMDB Rating: "+ getImdbRating() + "\n";
 
+    }
+    public List<Movie> oscarMovies(Context context){
+        Movie oscarmovie;
+
+        oscarmovie = new Movie();
+        oscarmovie.setTitle("Moonlight"); oscarmovie.setImagem(convert(context, R.drawable.moonlight)); oscarmovie.setImdbID("tt4975722");
+        oscarList.add(oscarmovie);
+
+        oscarmovie = new Movie();
+        oscarmovie.setTitle("Arrival"); oscarmovie.setImagem(convert(context, R.drawable.arrival));oscarmovie.setImdbID("tt2543164");
+        oscarList.add(oscarmovie);
+
+        oscarmovie = new Movie();
+        oscarmovie.setTitle("Fences"); oscarmovie.setImagem(convert(context, R.drawable.fences));oscarmovie.setImdbID("tt2671706");
+        oscarList.add(oscarmovie);
+
+        oscarmovie = new Movie();
+        oscarmovie.setTitle("Hacksaw Ridge"); oscarmovie.setImagem(convert(context, R.drawable.hacksawridge));oscarmovie.setImdbID("tt2119532");
+        oscarList.add(oscarmovie);
+
+        oscarmovie = new Movie();
+        oscarmovie.setTitle("La La Land"); oscarmovie.setImagem(convert(context, R.drawable.lalaland));oscarmovie.setImdbID("tt3783958");
+        oscarList.add(oscarmovie);
+
+        oscarmovie = new Movie();
+        oscarmovie.setTitle("Manchester By The Sea"); oscarmovie.setImagem(convert(context, R.drawable.manchester));oscarmovie.setImdbID("tt4034228");
+        oscarList.add(oscarmovie);
+
+        oscarmovie = new Movie();
+        oscarmovie.setTitle("Suicide Squad"); oscarmovie.setImagem(convert(context, R.drawable.suicidesquad));oscarmovie.setImdbID("tt1386697");
+        oscarList.add(oscarmovie);
+
+        oscarmovie = new Movie();
+        oscarmovie.setTitle("The Jungle Book"); oscarmovie.setImagem(convert(context, R.drawable.thejunglebook));oscarmovie.setImdbID("tt3040964");
+        oscarList.add(oscarmovie);
+
+        oscarmovie = new Movie();
+        oscarmovie.setTitle("Zootopia"); oscarmovie.setImagem(convert(context, R.drawable.zootopia));oscarmovie.setImdbID("tt2948356");
+        oscarList.add(oscarmovie);
+
+        oscarmovie = new Movie();
+        oscarmovie.setTitle("OJ: Made in America"); oscarmovie.setImagem(convert(context, R.drawable.ojmadeinamerica));oscarmovie.setImdbID("tt5275892");
+        oscarList.add(oscarmovie);
+
+        oscarmovie = new Movie();
+        oscarmovie.setTitle("The Salesman"); oscarmovie.setImagem(convert(context, R.drawable.thesalesman));oscarmovie.setImdbID("tt5186714");
+        oscarList.add(oscarmovie);
+
+        oscarmovie = new Movie();
+        oscarmovie.setTitle("The White Helmets"); oscarmovie.setImagem(convert(context, R.drawable.whitehelmets));oscarmovie.setImdbID("tt6073176");
+        oscarList.add(oscarmovie);
+        return oscarList;
+    }
+    public List<Movie> getOscarList() {
+        return oscarList;
+    }
+
+    public Bitmap convert(Context context, int imageid){
+        return BitmapFactory.decodeResource(context.getResources(), imageid);
     }
 
 }

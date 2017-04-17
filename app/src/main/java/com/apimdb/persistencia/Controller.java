@@ -4,9 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import com.apimdb.domain.Movie;
 
-import com.apimdb.domain.Filme;
 import java.util.ArrayList;
 
 
@@ -47,18 +46,18 @@ public class Controller {
         db = createDataBase.getReadableDatabase();
         db.delete(tabela,where,null);
     }
-    public ArrayList<Filme> getListaFilme() {
+    public ArrayList<Movie> getListaFilme() {
 
         DataBase db = new DataBase();
         String[] campos = db.getCampos();
         int[] indice = new int[campos.length];
         Cursor cursor;
-        cursor = this.CarregaDados("filmes_salvos", db.getCampos());
-        Filme novo;
-        ArrayList<Filme> lista = new ArrayList<Filme>();
+        cursor = this.CarregaDados("salvos", db.getCampos());
+        Movie novo;
+        ArrayList<Movie> lista = new ArrayList<Movie>();
         while (cursor != null) {
 
-            novo = new Filme();
+            novo = new Movie();
             novo.setTitle(cursor.getString(cursor.getColumnIndex("TITLE")));
             novo.setPlot(cursor.getString(cursor.getColumnIndex("PLOT")));
             novo.setDirector(cursor.getString(cursor.getColumnIndex("DIRECTOR")));
@@ -73,5 +72,32 @@ public class Controller {
         }
 
         return lista;
+    }
+
+    public synchronized Cursor searchMovie(String tabela, String imdbid){
+        db = createDataBase.getReadableDatabase();
+        String selectquery = "SELECT * FROM  '"+tabela+"' WHERE  IMDBID = '"+imdbid+"'";
+        Cursor cursor = db.rawQuery(selectquery,null);
+        if(cursor!= null){
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+    public synchronized Movie getMoviefrombd(String tabela, String imdbid) {
+        Movie novo = null;
+        Cursor cursor = searchMovie(tabela, imdbid);
+
+
+        if (cursor!=null) {
+            novo = new Movie();
+            novo.setTitle(cursor.getString(cursor.getColumnIndex("TITLE")));
+            novo.setPlot(cursor.getString(cursor.getColumnIndex("PLOT")));
+            novo.setDirector(cursor.getString(cursor.getColumnIndex("DIRECTOR")));
+            novo.setActors(cursor.getString(cursor.getColumnIndex("ACTOR")));
+            novo.setGenre(cursor.getString(cursor.getColumnIndex("GENRE")));
+            novo.setRuntime(cursor.getString(cursor.getColumnIndex("RUNTIME")));
+            novo.setLanguage(cursor.getString(cursor.getColumnIndex("LANGUAGE")));
+        }
+        return novo;
     }
 }

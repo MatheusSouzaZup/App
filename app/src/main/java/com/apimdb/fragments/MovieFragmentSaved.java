@@ -3,16 +3,13 @@ package com.apimdb.fragments;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.apimdb.R;
 import com.apimdb.SavedActivity;
-import com.apimdb.adapter.MovieAdapter;
 import com.apimdb.adapter.MovieSavedAdapter;
-import com.apimdb.domain.Filme;
+import com.apimdb.domain.Movie;
 import com.apimdb.persistencia.Controller;
 
 import java.util.ArrayList;
@@ -24,7 +21,7 @@ import java.util.ArrayList;
 public class MovieFragmentSaved extends android.support.v4.app.Fragment {
 
     private RecyclerView myRecyclerView;
-    private ArrayList<Filme> myList;
+    private ArrayList<Movie> myList;
     private Controller controller;
 
         @Override
@@ -47,7 +44,7 @@ public class MovieFragmentSaved extends android.support.v4.app.Fragment {
                     LinearLayoutManager llm =(LinearLayoutManager) myRecyclerView.getLayoutManager();
                     MovieSavedAdapter adapter = (MovieSavedAdapter) myRecyclerView.getAdapter();
                         if(myList.size() == llm.findLastCompletelyVisibleItemPosition()+1){
-                            ArrayList<Filme> listAux =  myList;
+                            ArrayList<Movie> listAux =  myList;
                                 for (int i = 0; i<listAux.size();i++){
                                     adapter.addListItem(listAux.get(i),myList.size());
                                 }

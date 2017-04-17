@@ -1,50 +1,20 @@
 package com.apimdb.adapter;
 
-import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.apimdb.ExtendActivity;
-import com.apimdb.MainActivity;
-import com.apimdb.MyApplication;
 import com.apimdb.R;
-import com.apimdb.SavedActivity;
-import com.apimdb.connection.Utils;
-import com.apimdb.domain.Filme;
+import com.apimdb.domain.Movie;
 import com.apimdb.persistencia.Controller;
-import com.apimdb.persistencia.CreateDataBase;
-import com.apimdb.persistencia.DataBase;
-import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -54,19 +24,22 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
-    private List<Filme> myList;
+    public static final String KEY_IMDBID = "imdbid";
+    private List<Movie> myList;
     private LayoutInflater myLayoutInflater;
     private Context context;
     private Controller controllerDB;
-    public MovieAdapter(List<Filme> l, Context c){
+
+    public MovieAdapter(List<Movie> l, Context c) {
         myList = l;
         myLayoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         context = c;
         controllerDB = new Controller(context);
     }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = myLayoutInflater.inflate(R.layout.item_movie_card,parent,false);
+        View v = myLayoutInflater.inflate(R.layout.item_movie_card, parent, false);
         MyViewHolder mvh = new MyViewHolder(v);
         return mvh;
     }
@@ -75,83 +48,44 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.imMovie.setImageBitmap(myList.get(position).getImagem());
         holder.tvTitle.setText(myList.get(position).getTitle());
-            holder.imMovie.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Configurando Imagem para mandar a outra activity
-                        Drawable drawable;
-                        Bitmap bitmap;
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        drawable = holder.imMovie.getDrawable();
-                        bitmap = ((BitmapDrawable)drawable).getBitmap();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG,100, stream);
-                        final byte[] bitMapData = stream.toByteArray();
-                        Bundle bundle = new Bundle();
-
-                        bundle.putString("imdbid",myList.get(position).getImdbID());
-                        bundle.putInt("pos",position);
-                        bundle.putString("title", myList.get(position).getTitle());
-                        bundle.putSerializable("image", bitMapData);
-                        Intent intent = new Intent(context, ExtendActivity.class);
-                        intent.putExtras(bundle);
-                        context.startActivity(intent);
-                    }
-                });
-
-
-
-                holder.imageButton.setOnClickListener(new View.OnClickListener() {
+        holder.imMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (context.getClass().equals(MainActivity.class)) {
-                    ContentValues values = new ContentValues();
-
-                    values.put("TITLE", myList.get(position).getTitle());
-                    values.put("YEAR", myList.get(position).getYear());
-                    values.put("RATED", myList.get(position).getRated());
-                    values.put("RELEASED", myList.get(position).getReleased());
-                    values.put("RUNTIME", myList.get(position).getRuntime());
-                    values.put("GENRE", myList.get(position).getGenre());
-                    values.put("DIRECTOR", myList.get(position).getDirector());
-                    values.put("ACTORS", myList.get(position).getActors());
-                    values.put("PLOT", myList.get(position).getPlot());
-                    values.put("LANGUAGE", myList.get(position).getLanguage());
-                    values.put("IMAGE", bitmaptoblob(myList.get(position).getImagem()));
-                    values.put("IMDBID", myList.get(position).getImdbID());
-                    values.put("IMDBRATING", myList.get(position).getImdbRating());
-                    values.put("POSTER", myList.get(position).getPoster());
-
-                    long resultado = controllerDB.inserirDados(CreateDataBase.NOME_TABELA, values);
-                    Log.i("Msg", String.valueOf(resultado));
-                    if (resultado == -1) {
-                        Toast.makeText(context, "This movie is already saved!", Toast.LENGTH_SHORT).show();
-
-                    } else {
-                        Toast.makeText(context, "Save", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
+                context.startActivity(setupValues(holder,position));
             }
         });
-    }
-    public byte[] bitmaptoblob(Bitmap bitmap) {
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
     }
     @Override
     public int getItemCount() {
         return myList.size();
     }
-
-    public void addListItem(Filme f, int position){
-
-        if(myList.contains(f) == false) {
+    public Intent setupValues(MyViewHolder holder,int position) {
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_IMDBID, myList.get(position).getImdbID());
+        bundle.putInt("contextint",1);
+        bundle.putInt("pos", position);
+        bundle.putString("title", myList.get(position).getTitle());
+        bundle.putSerializable("image", setupImage(holder));
+        Intent intent = new Intent(context, ExtendActivity.class);
+        intent.putExtras(bundle);
+        return intent;
+    }
+    public byte[] setupImage( MyViewHolder holder) {
+        Drawable drawable;
+        Bitmap bitmap;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        drawable = holder.imMovie.getDrawable();
+        bitmap = ((BitmapDrawable) drawable).getBitmap();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        final byte[] bitMapData = stream.toByteArray();
+        return bitMapData;
+    }
+    public void addListItem(Movie f, int position) {
+        if (myList.contains(f) == false) {
             myList.add(f);
         }
         notifyItemInserted(position);
     }
 
-    }
+}

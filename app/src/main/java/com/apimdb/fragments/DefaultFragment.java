@@ -12,18 +12,17 @@ import com.apimdb.MainActivity;
 import com.apimdb.R;
 import com.apimdb.adapter.MovieAdapter;
 import com.apimdb.domain.Movie;
-
 import java.util.List;
-
 
 /**
  * Created by Matheus on 19/03/2017.
  */
 
-public class MovieFragment extends Fragment {
+public class DefaultFragment extends Fragment {
 
     private RecyclerView myRecyclerView;
     private List<Movie> myList;
+    private Movie filmeobj = new Movie();
 
         @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -49,7 +48,7 @@ public class MovieFragment extends Fragment {
                 LinearLayoutManager llm =(LinearLayoutManager) myRecyclerView.getLayoutManager();
                 MovieAdapter adapter = (MovieAdapter) myRecyclerView.getAdapter();
                 if(myList.size() != llm.findLastCompletelyVisibleItemPosition()+1){
-                    List<Movie> listAux =  ((MainActivity) getActivity()).getList();
+                    List<Movie> listAux =  ((MainActivity) getActivity()).getmyOscarList();
                     for (int i = 0; i<listAux.size();i++){
                         adapter.addListItem(listAux.get(i),myList.size());
                     }
@@ -61,7 +60,7 @@ public class MovieFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         myRecyclerView.setLayoutManager(llm);
-        myList = ((MainActivity) getActivity()).getList();
+        myList = ((MainActivity) getActivity()).getmyOscarList();
         MovieAdapter adapter = new MovieAdapter(myList, getActivity());
         myRecyclerView.setAdapter(adapter);
     }

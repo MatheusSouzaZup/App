@@ -8,9 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-
-import com.apimdb.domain.Filme;
-import com.apimdb.fragments.MovieFragment;
+import com.apimdb.domain.Movie;
 import com.apimdb.fragments.MovieFragmentSaved;
 import com.apimdb.persistencia.Controller;
 import com.apimdb.persistencia.CreateDataBase;
@@ -21,7 +19,7 @@ import static com.apimdb.R.mipmap.ic_filmreel_black;
 
 public class SavedActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    public ArrayList<Filme> myList;
+    public ArrayList<Movie> myList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -37,7 +35,7 @@ public class SavedActivity extends AppCompatActivity {
 
         Cursor cursor = crud.CarregaDados(CreateDataBase.NOME_TABELA, campos);
 
-        myList = new ArrayList<Filme>();
+        myList = new ArrayList<Movie>();
 
         for (int i = 0; i < cursor.getCount(); i++) {
 
@@ -56,7 +54,7 @@ public class SavedActivity extends AppCompatActivity {
             Bitmap imagem = blobtobitmap(cursor.getBlob(12));
 
 
-            myList.add(new Filme(title,plot,year,director,actors,genre,runtime,rated,released,imdbid,imdbrating,language,imagem));
+            myList.add(new Movie(title,plot,year,director,actors,genre,runtime,rated,released,imdbid,imdbrating,language,imagem));
             cursor.moveToNext();
         }
 
@@ -73,8 +71,11 @@ public class SavedActivity extends AppCompatActivity {
     }
 
     public Bitmap blobtobitmap(byte[] blob) {
+        if(blob != null) {
+            return BitmapFactory.decodeByteArray(blob, 0, blob.length);
+        }
 
-        return BitmapFactory.decodeByteArray(blob, 0, blob.length);
+        return null;
     }
     @Override
     public void onRestart() {

@@ -23,12 +23,21 @@
         android:src="@null"
         android:layout_below="@+id/my_toolbar_extend"
         android:padding="20dp"/>
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@null"
+        android:padding="30dp"
+        app:srcCompat="@drawable/ic_heart_border"
+        android:layout_below="@+id/extend_my_image"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/extend_my_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/extend_my_image"
+        android:layout_below="@+id/imageButton"
         android:paddingLeft="16dp"
         android:paddingTop="16dp"
         android:textColor="@color/primary_text"

@@ -8,17 +8,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AlertDialogLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.apimdb.ExtendActivity;
 import com.apimdb.R;
 import com.apimdb.SavedActivity;
-import com.apimdb.domain.Filme;
+import com.apimdb.connection.Utils;
+import com.apimdb.domain.Movie;
 import com.apimdb.persistencia.Controller;
 import com.apimdb.persistencia.CreateDataBase;
 
@@ -31,12 +30,12 @@ import java.util.List;
 
 public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
 
-    private List<Filme> myList;
+    private List<Movie> myList;
     private LayoutInflater myLayoutInflater;
     private Context context;
     private Controller controller;
     private AlertDialog.Builder dialog;
-    public MovieSavedAdapter(List<Filme> l, Context c){
+    public MovieSavedAdapter(List<Movie> l, Context c){
         myList = l;
         myLayoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         context = c;
@@ -51,10 +50,10 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
 
     @Override
     public void onBindViewHolder(final ViewHolderSaved holder, final int position) {
-        holder.imMovie.setImageBitmap(myList.get(position).getImagem());
+        Bitmap img = myList.get(position).getImagem();
+        holder.imMovie.setImageBitmap(img != null ? img : Utils.getInstance().convert(context, R.drawable.notfound));
         holder.tvTitle.setText(myList.get(position).getTitle());
         holder.tvDescription.setText(myList.get(position).getPlot());
-
         //Configurando Imagem para mandar a outra activity
         Drawable drawable;
         Bitmap bitmap;
@@ -68,7 +67,8 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-
+                bundle.putInt("contextint", 2);
+                bundle.putString("imdbid", myList.get(position).getImdbID());
                 bundle.putString("title", myList.get(position).getTitle());
                 bundle.putString("infos",myList.get(position).toString());
                 bundle.putSerializable("image", bitMapData);
@@ -113,12 +113,11 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return myList.size();
     }
-    public void addListItem(Filme f, int position){
+    public void addListItem(Movie f, int position){
         notifyItemInserted(position);
     }
 

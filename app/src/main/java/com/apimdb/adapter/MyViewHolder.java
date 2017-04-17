@@ -17,14 +17,9 @@ import com.apimdb.R;
 public class MyViewHolder extends RecyclerView.ViewHolder{
     public ImageView imMovie;
     public TextView tvTitle;
-   // public TextView tvPlot;
-    public ImageButton imageButton;
     public MyViewHolder(View itemView) {
         super(itemView);
-
         imMovie = (ImageView) itemView.findViewById(R.id.my_image);
         tvTitle = (TextView) itemView.findViewById(R.id.my_title);
-       // tvPlot = (TextView) itemView.findViewById(R.id.my_description);
-        imageButton = (ImageButton) itemView.findViewById(R.id.imageButton);
     }
 }

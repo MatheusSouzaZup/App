@@ -8,6 +8,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Network;
+import com.android.volley.toolbox.NetworkImageView;
 import com.apimdb.R;
 
 /**
@@ -15,11 +17,11 @@ import com.apimdb.R;
  */
 
 public class MyViewHolder extends RecyclerView.ViewHolder{
-    public ImageView imMovie;
     public TextView tvTitle;
+    public NetworkImageView networkImageView;
     public MyViewHolder(View itemView) {
         super(itemView);
-        imMovie = (ImageView) itemView.findViewById(R.id.my_image);
         tvTitle = (TextView) itemView.findViewById(R.id.my_title);
+        networkImageView = (NetworkImageView) itemView.findViewById(R.id.my_image);
     }
 }

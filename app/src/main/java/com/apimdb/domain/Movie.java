@@ -173,14 +173,14 @@ public class Movie {
 
     @Override
     public String toString() {
-        return "Plot: " + getPlot()+ "\n"+
-                "Runtime: " + getRuntime() + "\n"+
-                "Actors: " + getActors() + "\n"+
-                "Writers: "+ getDirector() +"\n"+
-                "Genre: "+ getGenre() + "\n"+
-                "Released: "+ getReleased() + "\n"+
-                "Language: "+ getLanguage() + "\n"+
-                "IMDB Rating: "+ getImdbRating() + "\n";
+        return "Sinopse: " + getPlot()+ "\n"+
+                "Duração: " + getRuntime() + "\n"+
+                "Atores: " + getActors() + "\n"+
+                "Diretores: "+ getDirector() +"\n"+
+                "Genero: "+ getGenre() + "\n"+
+                "Data Lançamento: "+ getReleased() + "\n"+
+                "Linguas: "+ getLanguage() + "\n"+
+                "Nota IMDB: "+ getImdbRating() + "\n";
 
     }
     public List<Movie> oscarMovies(Context context){

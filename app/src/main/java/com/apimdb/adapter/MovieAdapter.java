@@ -10,7 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
 import com.apimdb.ExtendActivity;
+import com.apimdb.MyApplication;
 import com.apimdb.R;
 import com.apimdb.domain.Movie;
 import com.apimdb.persistencia.Controller;
@@ -29,6 +34,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
     private LayoutInflater myLayoutInflater;
     private Context context;
     private Controller controllerDB;
+    private RequestQueue mRequestQueue;
+    private ImageLoader imageLoader;
 
     public MovieAdapter(List<Movie> l, Context c) {
         myList = l;
@@ -46,15 +53,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.imMovie.setImageBitmap(myList.get(position).getImagem());
+        mRequestQueue = MyApplication.getInstance().getRequestQueue();
+        imageLoader = MyApplication.getInstance().getImageLoader();
+        imageLoader.get(myList.get(position).getPoster(),ImageLoader.getImageListener(holder.networkImageView,250,250));
+        holder.networkImageView.setImageUrl(myList.get(position).getPoster(),imageLoader);
+        //holder.imMovie.setImageBitmap(myList.get(position).getImagem());
         holder.tvTitle.setText(myList.get(position).getTitle());
-        holder.imMovie.setOnClickListener(new View.OnClickListener() {
+
+       /* holder.imMovie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(setupValues(holder,position));
+            }
+        });*/
+        holder.networkImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 context.startActivity(setupValues(holder,position));
             }
         });
-
     }
     @Override
     public int getItemCount() {
@@ -75,7 +92,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
         Drawable drawable;
         Bitmap bitmap;
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        drawable = holder.imMovie.getDrawable();
+        drawable = holder.networkImageView.getDrawable();
         bitmap = ((BitmapDrawable) drawable).getBitmap();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         final byte[] bitMapData = stream.toByteArray();

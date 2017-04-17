@@ -1,6 +1,7 @@
 package com.apimdb.fragments;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,9 +42,9 @@ public class MovieFragmentSaved extends android.support.v4.app.Fragment {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-                    LinearLayoutManager llm =(LinearLayoutManager) myRecyclerView.getLayoutManager();
+                    GridLayoutManager glm =(GridLayoutManager) myRecyclerView.getLayoutManager();
                     MovieSavedAdapter adapter = (MovieSavedAdapter) myRecyclerView.getAdapter();
-                        if(myList.size() == llm.findLastCompletelyVisibleItemPosition()+1){
+                        if(myList.size() == glm.findLastCompletelyVisibleItemPosition()+1){
                             ArrayList<Movie> listAux =  myList;
                                 for (int i = 0; i<listAux.size();i++){
                                     adapter.addListItem(listAux.get(i),myList.size());
@@ -52,11 +53,11 @@ public class MovieFragmentSaved extends android.support.v4.app.Fragment {
                 }
             });
 
-            LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-            llm.setOrientation(LinearLayoutManager.VERTICAL);
-            myRecyclerView.setLayoutManager(llm);
+            GridLayoutManager glm = new GridLayoutManager(getActivity(),2);
+            glm.setOrientation(GridLayoutManager.VERTICAL);
+            myRecyclerView.setLayoutManager(glm);
             myList = ((SavedActivity) getActivity()).myList;
-            MovieSavedAdapter adapter = new MovieSavedAdapter(myList,getActivity());
+            MovieSavedAdapter adapter = new MovieSavedAdapter(myList,getActivity(),true);
 
             myRecyclerView.setAdapter(adapter);
             return view;

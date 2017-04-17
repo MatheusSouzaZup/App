@@ -3,6 +3,7 @@ package com.apimdb.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import com.apimdb.MainActivity;
 import com.apimdb.R;
 import com.apimdb.adapter.MovieAdapter;
+import com.apimdb.adapter.MovieSavedAdapter;
 import com.apimdb.domain.Movie;
 import java.util.List;
 
@@ -45,9 +47,9 @@ public class DefaultFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager llm =(LinearLayoutManager) myRecyclerView.getLayoutManager();
-                MovieAdapter adapter = (MovieAdapter) myRecyclerView.getAdapter();
-                if(myList.size() != llm.findLastCompletelyVisibleItemPosition()+1){
+                GridLayoutManager glm =(GridLayoutManager) myRecyclerView.getLayoutManager();
+                MovieSavedAdapter adapter = (MovieSavedAdapter) myRecyclerView.getAdapter();
+                if(myList.size() != glm.findLastCompletelyVisibleItemPosition()+1){
                     List<Movie> listAux =  ((MainActivity) getActivity()).getmyOscarList();
                     for (int i = 0; i<listAux.size();i++){
                         adapter.addListItem(listAux.get(i),myList.size());
@@ -57,11 +59,11 @@ public class DefaultFragment extends Fragment {
         });
 
 
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        myRecyclerView.setLayoutManager(llm);
+        GridLayoutManager glm = new GridLayoutManager(getActivity(),2);
+        glm.setOrientation(GridLayoutManager.VERTICAL);
+        myRecyclerView.setLayoutManager(glm);
         myList = ((MainActivity) getActivity()).getmyOscarList();
-        MovieAdapter adapter = new MovieAdapter(myList, getActivity());
+        MovieSavedAdapter adapter = new MovieSavedAdapter(myList, getActivity(),false);
         myRecyclerView.setAdapter(adapter);
     }
 

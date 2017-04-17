@@ -24,6 +24,8 @@ import com.apimdb.persistencia.CreateDataBase;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+import static com.apimdb.R.id.imageButton;
+
 /**
  * Created by ZUP on 24/03/2017.
  */
@@ -35,11 +37,13 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
     private Context context;
     private Controller controller;
     private AlertDialog.Builder dialog;
-    public MovieSavedAdapter(List<Movie> l, Context c){
+    private boolean verify;
+    public MovieSavedAdapter(List<Movie> l, Context c, boolean verify){
         myList = l;
         myLayoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         context = c;
         controller = new Controller(context);
+        this.verify = verify;
     }
     @Override
     public ViewHolderSaved onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,11 +54,71 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
 
     @Override
     public void onBindViewHolder(final ViewHolderSaved holder, final int position) {
-        Bitmap img = myList.get(position).getImagem();
-        holder.imMovie.setImageBitmap(img != null ? img : Utils.getInstance().convert(context, R.drawable.notfound));
-        holder.tvTitle.setText(myList.get(position).getTitle());
-        holder.tvDescription.setText(myList.get(position).getPlot());
-        //Configurando Imagem para mandar a outra activity
+
+            Bitmap img = myList.get(position).getImagem();
+            holder.imMovie.setImageBitmap(img != null ? img : Utils.getInstance().convert(context, R.drawable.notfound));
+            holder.tvTitle.setText(myList.get(position).getTitle());
+
+
+            holder.imMovie.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    context.startActivity(setupvalues(holder, position));
+                }
+            });
+        if(verify==true) {
+            holder.imageButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    dialog = new AlertDialog.Builder(context);
+                    dialog.setTitle("Confirmar Exclusao");
+                    dialog.setMessage("Confirma a Exclusao?");
+
+                    dialog.setNegativeButton("Nao",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }
+                    );
+                    dialog.setPositiveButton("Sim",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    final String where = CreateDataBase.tabela.TITLE + "=" + "'" + myList.get(position).getTitle() + "'";
+                                    controller.DeletaDados(CreateDataBase.NOME_TABELA, where);
+                                    Toast.makeText(context, "Removed!", Toast.LENGTH_SHORT).show();
+                                    ((SavedActivity) context).refresh();
+
+                                }
+                            });
+                    dialog.create();
+                    dialog.show();
+
+
+                }
+            });
+        }
+        else {
+            holder.imageButton.setVisibility(View.GONE);
+        }
+    }
+    private Intent setupvalues(ViewHolderSaved holder,int position) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("contextint", 2);
+        bundle.putString("imdbid", myList.get(position).getImdbID());
+        bundle.putString("title", myList.get(position).getTitle());
+        bundle.putString("infos",myList.get(position).toString());
+        bundle.putSerializable("image", setupimage(holder));
+        Intent intent = new Intent(context, ExtendActivity.class);
+        intent.putExtras(bundle);
+        return intent;
+    }
+    private byte[] setupimage(ViewHolderSaved holder) {
         Drawable drawable;
         Bitmap bitmap;
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -62,56 +126,7 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
         bitmap = ((BitmapDrawable)drawable).getBitmap();
         bitmap.compress(Bitmap.CompressFormat.JPEG,100, stream);
         final byte[] bitMapData = stream.toByteArray();
-
-        holder.imMovie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("contextint", 2);
-                bundle.putString("imdbid", myList.get(position).getImdbID());
-                bundle.putString("title", myList.get(position).getTitle());
-                bundle.putString("infos",myList.get(position).toString());
-                bundle.putSerializable("image", bitMapData);
-                Intent intent = new Intent(context, ExtendActivity.class);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
-            }
-        });
-
-        holder.imageButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                dialog = new AlertDialog.Builder(context);
-                dialog.setTitle("Confirmar Exclusao");
-                dialog.setMessage("Confirma a Exclusao?");
-
-                dialog.setNegativeButton("Nao",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        }
-                );
-                dialog.setPositiveButton("Sim",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                final String where = CreateDataBase.tabela.TITLE + "=" + "'" + myList.get(position).getTitle() + "'";
-                                controller.DeletaDados(CreateDataBase.NOME_TABELA, where);
-                                Toast.makeText(context, "Removed!", Toast.LENGTH_SHORT).show();
-                                ((SavedActivity) context).refresh();
-
-                            }
-                        });
-                dialog.create();
-                dialog.show();
-
-
-            }
-        });
+        return bitMapData;
     }
     @Override
     public int getItemCount() {

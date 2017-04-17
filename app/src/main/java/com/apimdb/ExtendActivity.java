@@ -3,6 +3,7 @@ package com.apimdb;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +26,7 @@ import com.apimdb.persistencia.CreateDataBase;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
-
+import java.util.ArrayList;
 
 
 public class ExtendActivity extends AppCompatActivity {
@@ -83,10 +84,44 @@ public class ExtendActivity extends AppCompatActivity {
             getInfosFromService();
         }
     }
+
     private void getinfosfrombd() {
-        myMovie = controllerDB.getMoviefrombd("salvos",imdbid);
-        myMovie.setImagem(image);
+        Controller crud = new Controller(getBaseContext());
+        String campos[] = {CreateDataBase.tabela.TITLE, CreateDataBase.tabela.PLOT, CreateDataBase.tabela.YEAR, CreateDataBase.tabela.DIRECTOR, CreateDataBase.tabela.ACTORS, CreateDataBase.tabela.GENRE, CreateDataBase.tabela.RUNTIME, CreateDataBase.tabela.RATED, CreateDataBase.tabela.RELEASED, CreateDataBase.tabela.IMDBID, CreateDataBase.tabela.IMDBRATING, CreateDataBase.tabela.LANGUAGE, CreateDataBase.tabela.IMAGE};
+
+        Cursor cursor = crud.searchMovie(CreateDataBase.NOME_TABELA, imdbid);
+
+        myMovie = null;
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+
+            String title = cursor.getString(0);
+            String year = cursor.getString(1);
+            String rated = cursor.getString(2);
+            String released = cursor.getString(3);
+            String runtime = cursor.getString(4);
+            String genre = cursor.getString(5);
+            String director = cursor.getString(6);
+            String actors = cursor.getString(7);
+            String plot = cursor.getString(8);
+            String language = cursor.getString(9);
+            String imdbid = cursor.getString(10);
+            String imdbrating = cursor.getString(11);
+            Bitmap imagem = blobtobitmap(cursor.getBlob(12));
+
+
+            myMovie = new Movie(title,plot,year,director,actors,genre,runtime,rated,released,imdbid,imdbrating,language,imagem);
+            cursor.moveToNext();
+        }
         fillActivity(myMovie);
+
+    }
+    public Bitmap blobtobitmap(byte[] blob) {
+        if(blob != null) {
+            return BitmapFactory.decodeByteArray(blob, 0, blob.length);
+        }
+
+        return null;
     }
     private void fillActivity(Movie f) {
         ivImage.setImageBitmap(image);
@@ -99,10 +134,9 @@ public class ExtendActivity extends AppCompatActivity {
                 ContentValues values = setupvalues(myMovie);
                 long resultado = controllerDB.inserirDados(CreateDataBase.NOME_TABELA, values);
                  if (resultado == -1) {
-                     Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
-
-                } else {
                      Toast.makeText(getApplicationContext(), "Este item já esta salvo!", Toast.LENGTH_SHORT).show();
+                } else {
+                     Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
                  }
             }
         });

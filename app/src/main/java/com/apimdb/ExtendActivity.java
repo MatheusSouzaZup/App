@@ -15,9 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.apimdb.adapter.MovieAdapter;
 import com.apimdb.connection.Utils;
 import com.apimdb.domain.Movie;
@@ -42,6 +45,11 @@ public class ExtendActivity extends AppCompatActivity {
     int contextint = 0;
     private Utils utils = new Utils();
     private Controller controllerDB;
+    private String urlimage;
+    private NetworkImageView networkImageView;
+    private RequestQueue mRequestQueue;
+    private ImageLoader imageLoader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,12 +74,13 @@ public class ExtendActivity extends AppCompatActivity {
                 imageByteArray = params.getByteArray("image");
                 position = params.getInt("pos");
                 title = params.getString("title");
+                urlimage = params.getString("urlimage");
             }
         }
         image = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
         myToolbar.setTitle(title);
         setSupportActionBar(myToolbar);
-        ivImage = (ImageView) findViewById(R.id.extend_my_image);
+        networkImageView = (NetworkImageView) findViewById(R.id.extend_my_image);
         tvTitle = (TextView) findViewById(R.id.extend_my_title);
         tvInfos = (TextView) findViewById(R.id.extent_my_plot);
         imageButton = (ImageButton) findViewById(R.id.imageButton);
@@ -108,12 +117,13 @@ public class ExtendActivity extends AppCompatActivity {
             String imdbid = cursor.getString(10);
             String imdbrating = cursor.getString(11);
             Bitmap imagem = blobtobitmap(cursor.getBlob(12));
-
+            urlimage = cursor.getString(cursor.getColumnIndex("poster"));
 
             myMovie = new Movie(title,plot,year,director,actors,genre,runtime,rated,released,imdbid,imdbrating,language,imagem);
+            myMovie.setPoster(urlimage);
             cursor.moveToNext();
         }
-        fillActivity(myMovie);
+        fillActivitybyBD(myMovie);
 
     }
     public Bitmap blobtobitmap(byte[] blob) {
@@ -123,11 +133,17 @@ public class ExtendActivity extends AppCompatActivity {
 
         return null;
     }
-    private void fillActivity(Movie f) {
-        ivImage.setImageBitmap(image);
+    private void fillActivitybyService(Movie f) {
+        myMovie = f;
+        mRequestQueue = MyApplication.getInstance().getRequestQueue();
+        imageLoader = MyApplication.getInstance().getImageLoader();
+        imageLoader.get(myMovie.getPoster(),ImageLoader.getImageListener(networkImageView,250,250));
+        networkImageView.setImageUrl(myMovie.getPoster(),imageLoader);
+        networkImageView.setDefaultImageResId(R.drawable.notfound);
+        networkImageView.setErrorImageResId(R.drawable.notfound);
         tvTitle.setText(title);
         tvInfos.setText(myMovie.toString());
-        myMovie = f;
+
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +156,18 @@ public class ExtendActivity extends AppCompatActivity {
                  }
             }
         });
+    }
+    private void fillActivitybyBD(Movie f) {
+        myMovie = f;
+        mRequestQueue = MyApplication.getInstance().getRequestQueue();
+        imageLoader = MyApplication.getInstance().getImageLoader();
+        imageLoader.get(myMovie.getPoster(),ImageLoader.getImageListener(networkImageView,250,250));
+        networkImageView.setImageUrl(myMovie.getPoster(),imageLoader);
+        networkImageView.setDefaultImageResId(R.drawable.notfound);
+        networkImageView.setErrorImageResId(R.drawable.notfound);
+        tvTitle.setText(title);
+        tvInfos.setText(myMovie.toString());
+
     }
     public byte[] bitmaptoblob(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -174,7 +202,7 @@ public class ExtendActivity extends AppCompatActivity {
                     movie = new Gson().fromJson(response.toString(), Movie.class);
                     myMovie = movie;
                     myMovie.setImagem(image);
-                    fillActivity(myMovie);
+                    fillActivitybyService(myMovie);
                 }
 
             }, new Response.ErrorListener() {

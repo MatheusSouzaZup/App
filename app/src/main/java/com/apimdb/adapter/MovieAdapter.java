@@ -55,17 +55,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         mRequestQueue = MyApplication.getInstance().getRequestQueue();
         imageLoader = MyApplication.getInstance().getImageLoader();
-        imageLoader.get(myList.get(position).getPoster(),ImageLoader.getImageListener(holder.networkImageView,250,250));
-        holder.networkImageView.setImageUrl(myList.get(position).getPoster(),imageLoader);
-        //holder.imMovie.setImageBitmap(myList.get(position).getImagem());
-        holder.tvTitle.setText(myList.get(position).getTitle());
+            imageLoader.get(myList.get(position).getPoster(), ImageLoader.getImageListener(holder.networkImageView, 250, 250));
+            holder.networkImageView.setImageUrl(myList.get(position).getPoster(), imageLoader);
+            holder.networkImageView.setDefaultImageResId(R.drawable.notfound);
+            holder.networkImageView.setErrorImageResId(R.drawable.notfound);
 
-       /* holder.imMovie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(setupValues(holder,position));
-            }
-        });*/
+
+
+        holder.tvTitle.setText(myList.get(position).getTitle());
         holder.networkImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        myToolbar.setLogo(ic_filmreel_black);
+        myToolbar.setLogo(R.drawable.therealogo);
         setSupportActionBar(myToolbar);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -83,8 +83,54 @@ public class MainActivity extends AppCompatActivity{
         return url +search;
     }
     public void mySearch() {
-            final GetImages getImages = new GetImages(MainActivity.this);
-            getImages.execute();
+        final ProgressDialog load;
+        final Utils util = new Utils();
+        load = ProgressDialog.show(MainActivity.this,"","Loading...",true);
+        if(util.checkConnection(MainActivity.this) == true) {
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, geturl(), new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    List<Movie> movies = null;
+                    boolean checkerror = false;
+                    try {
+                        checkerror = Boolean.parseBoolean(response.getString("Response"));
+                    }
+                    catch (JSONException e){
+                        e.printStackTrace();
+                    }
+
+                    if(checkerror) {
+                        try {
+                            movies = Arrays.asList(new Gson().fromJson(response.getJSONArray("Search").toString(), Movie[].class));
+                            list = util.getImages(movies);
+                            callMovieFragment();
+                            load.dismiss();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            load.dismiss();
+                        }
+                    }
+                    else {
+                        load.dismiss();
+                        callerrordialog();
+                    }
+                }
+
+            }, new ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("Erro");
+                    error.printStackTrace();
+                }
+            }
+            );
+
+            MyApplication.getInstance().addToRequestQueue(request);
+        }
+        else{
+            Toast.makeText(MainActivity.this, "Sem Conexão", Toast.LENGTH_SHORT).show();
+        }
 
         }
     public void callMovieFragment() {
@@ -118,81 +164,6 @@ public class MainActivity extends AppCompatActivity{
     }
     public List<Movie> getmyOscarList() {
         return oscarList;
-    }
-    public class GetImages extends AsyncTask<List<Movie>, Void, Void> {
-        List<Movie> listAux;
-        private Context context;
-        private ProgressDialog load;
-        final Utils util = new Utils();
-
-        @Override
-        protected void onPreExecute(){
-            load = ProgressDialog.show(context,"","Loading...",true);
-        }
-
-        public GetImages(Context context) {
-            listAux = new ArrayList<Movie>();
-            this.context = context;
-        }
-        @Override
-        protected Void doInBackground(List<Movie>... params) {
-            if(util.checkConnection(MainActivity.this) == true) {
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, geturl(), new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        List<Movie> movies = null;
-                        boolean checkerror = false;
-                        try {
-                            checkerror = Boolean.parseBoolean(response.getString("Response"));
-                        }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                        }
-
-                        if(checkerror) {
-                            try {
-                                movies = Arrays.asList(new Gson().fromJson(response.getJSONArray("Search").toString(), Movie[].class));
-                                list = util.getImages(movies);
-                                callMovieFragment();
-                                load.dismiss();
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                load.dismiss();
-                            }
-                        }
-                        else {
-                            load.dismiss();
-                            callerrordialog();
-                        }
-                    }
-
-                }, new ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println("Erro");
-                        error.printStackTrace();
-                    }
-                }
-                );
-
-                MyApplication.getInstance().addToRequestQueue(request);
-            }
-            else{
-                Toast.makeText(MainActivity.this, "Sem Conexão", Toast.LENGTH_SHORT).show();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v){
-        }
-
-        public List<Movie> getLista() {
-            return list;
-        }
-
     }
     public void fillactivity() {
             callDefaultFragment();

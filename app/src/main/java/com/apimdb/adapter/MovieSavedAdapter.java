@@ -63,8 +63,12 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
             holder.imMovie.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    context.startActivity(setupvalues(holder, position));
+                        if(verify == true) {
+                            context.startActivity(setupvalues(holder, position));
+                        }
+                        else{
+                            context.startActivity(setupvaluesfromdefault(holder,position));
+                        }
                 }
             });
         if(verify==true) {
@@ -110,6 +114,18 @@ public class MovieSavedAdapter extends RecyclerView.Adapter<ViewHolderSaved> {
     private Intent setupvalues(ViewHolderSaved holder,int position) {
         Bundle bundle = new Bundle();
         bundle.putInt("contextint", 2);
+        bundle.putString("imdbid", myList.get(position).getImdbID());
+        bundle.putString("title", myList.get(position).getTitle());
+        bundle.putString("infos",myList.get(position).toString());
+        bundle.putString("url", myList.get(position).toString());
+        bundle.putSerializable("image", setupimage(holder));
+        Intent intent = new Intent(context, ExtendActivity.class);
+        intent.putExtras(bundle);
+        return intent;
+    }
+    private Intent setupvaluesfromdefault(ViewHolderSaved holder, int position) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("contextint", 1);
         bundle.putString("imdbid", myList.get(position).getImdbID());
         bundle.putString("title", myList.get(position).getTitle());
         bundle.putString("infos",myList.get(position).toString());

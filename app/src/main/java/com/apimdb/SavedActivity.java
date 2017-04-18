@@ -26,7 +26,7 @@ public class SavedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved);
         toolbar = (Toolbar) findViewById(R.id.my_toolbar_saved);
-        toolbar.setLogo(ic_filmreel_black);
+        toolbar.setLogo(R.drawable.therealogo);
         toolbar.setTitle("My Movies");
         setSupportActionBar(toolbar);
 
